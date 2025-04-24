@@ -166,7 +166,7 @@ export default function Hero() {
                 <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
                 <div className="w-3 h-3 rounded-full bg-green-500"></div>
               </div>
-              <div className="text-xs text-zinc-400">bash -- 80x24</div>
+              <div className="text-xs text-zinc-400">bash</div>
               <button onClick={() => setShowTerminal(false)} className="text-zinc-400 hover:text-white md:hidden">
                 <X className="h-4 w-4" />
               </button>
