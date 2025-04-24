@@ -5,8 +5,8 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { ChevronRight, ChevronDown, ExternalLink, Github } from "lucide-react"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog"
+import { ChevronRight, ChevronDown, ExternalLink, Github, X } from "lucide-react"
 
 type ProjectTab = "description" | "code" | "stack" | "structure"
 
@@ -345,9 +345,9 @@ Características principais:
                       </CardContent>
                     </Card>
                   </DialogTrigger>
-                  <DialogContent className="sm:max-w-[900px] bg-zinc-900 border-zinc-700 text-white p-0">
-                    <DialogHeader className="px-6 pt-6 pb-2">
-                      <DialogTitle className="text-2xl font-bold text-white">{work.title}</DialogTitle>
+                  <DialogContent className="sm:max-w-[900px] bg-zinc-900 border-zinc-700 text-white p-0 max-h-[90vh] overflow-y-auto">
+                    <DialogHeader className="px-6 pt-6 pb-2 flex flex-row items-center justify-between">
+                      <DialogTitle className="text-2xl font-bold text-white">{work.title}</DialogTitle>                    
                     </DialogHeader>
                     <Tabs defaultValue="description" className="w-full">
                       <div className="border-b border-zinc-700">
@@ -383,7 +383,7 @@ Características principais:
                                 ))}
                               </div>
                             </div>
-                            <div className="flex items-center justify-between">
+                            <div className="flex items-center justify-between flex-wrap gap-4">
                               <div>
                                 <h4 className="text-lg font-medium mb-1">Status</h4>
                                 <span className="text-lg">{work.status}</span>
@@ -411,7 +411,7 @@ Características principais:
                                 <div className="bg-zinc-800 px-4 py-2 text-sm font-mono border-b border-zinc-700">
                                   <span>Endpoints disponíveis</span>
                                 </div>
-                                <div className="p-4">
+                                <div className="p-4 overflow-x-auto">
                                   <table className="w-full border-collapse">
                                     <thead>
                                       <tr className="border-b border-zinc-800">

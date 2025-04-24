@@ -254,8 +254,8 @@ export default function Hero() {
           whileTap={{ scale: 0.95 }}
         >
           <h1 className="text-6xl font-bold tracking-tighter sm:text-7xl lg:text-8xl">LUÍS MIGUEL</h1>
-          {/* Hidden binary code that appears on hover */}
-          <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 opacity-20 text-xs font-mono">
+          {/* Hidden binary code that appears on hover - improved visibility for mobile */}
+          <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 opacity-40 text-sm sm:text-xs font-mono bg-black bg-opacity-50 px-2 py-1 rounded">
             01001100 01110101 01101001 01110011
           </div>
         </motion.div>
