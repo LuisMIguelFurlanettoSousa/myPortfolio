@@ -11,14 +11,15 @@ export default function Hero() {
   const [clickCount, setClickCount] = useState(0)
   const [terminalOutput, setTerminalOutput] = useState<string[]>([])
   const [isTyping, setIsTyping] = useState(false)
-  const [showTerminal, setShowTerminal] = useState(() => {
-    // Check if window is defined (client-side)
-    if (typeof window !== "undefined") {
-      // If on mobile, start with terminal minimized
-      return window.innerWidth > 768
+  const [showTerminal, setShowTerminal] = useState(false)
+
+  // Add this useEffect to handle window-based initialization
+  useEffect(() => {
+    // Check if on desktop and update terminal visibility
+    if (typeof window !== "undefined" && window.innerWidth > 768) {
+      setShowTerminal(true)
     }
-    return true
-  })
+  }, [])
 
   useEffect(() => {
     if (!canvasRef.current) return
@@ -150,13 +151,13 @@ export default function Hero() {
             className="bg-zinc-900 border border-zinc-700 rounded-md p-2 shadow-lg flex items-center"
           >
             <Terminal className="h-4 w-4 text-green-500 mr-1" />
-            <span className="text-xs text-green-500">Contact</span>
+            <span className="text-xs text-green-500">Terminal</span>
           </button>
         ) : null}
       </div>
 
       {/* Terminal-style Social Links - Mac style */}
-      {(showTerminal || window.innerWidth > 768) && (
+      {showTerminal && (
         <div className="fixed top-6 left-6 z-50">
           <div className="bg-black bg-opacity-90 border border-zinc-800 rounded-lg overflow-hidden shadow-lg w-72">
             {/* Terminal header - Mac style */}
@@ -231,7 +232,7 @@ export default function Hero() {
                       terminalOutput.innerHTML =
                         "> navigate to contact section<br>> Scrolling...<br>> Contact section reached!"
                     }
-                    if (window.innerWidth <= 768) {
+                    if (typeof window !== "undefined" && window.innerWidth <= 768) {
                       setShowTerminal(false)
                     }
                   }}

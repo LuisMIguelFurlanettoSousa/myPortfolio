@@ -15,6 +15,9 @@ export default function EasterEggs() {
 
   // Konami code easter egg
   useEffect(() => {
+    // Only run on client side
+    if (typeof window === "undefined") return
+
     const konamiCode = [
       "ArrowUp",
       "ArrowUp",
@@ -70,8 +73,6 @@ export default function EasterEggs() {
           "Available commands:",
           "- help: Show this help message",
           "- clear: Clear the console",
-          "- status: Check server status",
-          "- sql: Run a sample SQL query",
           "- error: Simulate a server error",
           "- about: About the developer",
           "- curses: Show completed courses",
@@ -83,37 +84,6 @@ export default function EasterEggs() {
         setConsoleOutput([])
         setCommand("")
         return
-
-      case "status":
-        output.push(
-          "Server status: Online",
-          "Uptime: 99.99%",
-          "Memory usage: 128MB / 512MB",
-          "CPU load: 12%",
-          "Active connections: 3",
-          "Response time: 42ms",
-        )
-        break
-
-      case "sql":
-        output.push(
-          "Executing query: SELECT * FROM projects WHERE status = 'completed'",
-          "Query successful (6 rows returned in 0.023s)",
-          "┌────────────┬────────────────────┬────────────┬────────────┐",
-          "│ id         │ name               │ status     │ created_at │",
-          "├────────────┼────────────────────┼────────────┼────────────┤",
-          "│ 1          │ Authentication     │ completed  │ 2023-05-12 │",
-          "│ 2          │ Slot Machine       │ completed  │ 2023-07-23 │",
-          "│ 3          │ API REST           │ completed  │ 2023-09-04 │",
-          "│ 4          │ UI Responsive      │ completed  │ 2023-11-18 │",
-          "│ 5          │ SQL Database       │ completed  │ 2024-01-30 │",
-          "│ 6          │ Full-Stack App     │ completed  │ 2024-03-15 │",
-          "└────────────┴────────────────────┴────────────┴────────────┘",
-        )
-        setShowSecret(true)
-        setSecretType("sql")
-        setTimeout(() => setShowSecret(false), 3000)
-        break
 
       case "error":
         output.push(
@@ -255,30 +225,6 @@ export default function EasterEggs() {
             </div>
           </div>
           <div className="mt-2 text-xs text-zinc-400">Konami code activated!</div>
-        </motion.div>
-      )}
-
-      {/* SQL Query visualization */}
-      {showSecret && secretType === "sql" && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed bottom-4 left-4 z-50 bg-zinc-900 border border-zinc-700 p-4 rounded-lg shadow-lg font-mono"
-        >
-          <div className="text-green-500 font-bold mb-2">Query Execution Plan</div>
-          <div className="text-xs text-zinc-300">
-            <pre className="whitespace-pre-wrap">
-              {`EXPLAIN SELECT * FROM projects WHERE status = 'completed'
-┌─────────────────────────────────────────────┐
-│ SCAN TABLE projects WHERE status = 'completed'
-│ ├─ Cost: 0.03 ms
-│ ├─ Rows examined: 12
-│ ├─ Rows returned: 6
-│ └─ Index used: status_idx
-└─────────────────────────────────────────────┘`}
-            </pre>
-          </div>
         </motion.div>
       )}
 

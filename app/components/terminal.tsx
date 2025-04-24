@@ -115,6 +115,8 @@ drwxr-xr-x 10 luis  staff  320 Apr 22 19:48 ..
 
   // Detect when terminal is in viewport
   useEffect(() => {
+    if (typeof window === "undefined") return
+
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {

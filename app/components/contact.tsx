@@ -1,32 +1,95 @@
 "use client"
 
+import type React from "react"
+
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { motion } from "framer-motion"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 
+// Enhanced form schema with security validations
 const formSchema = z.object({
-  name: z.string().min(2, {
-    message: "Name must be at least 2 characters.",
-  }),
-  email: z.string().email({
-    message: "Please enter a valid email address.",
-  }),
-  message: z.string().min(10, {
-    message: "Message must be at least 10 characters.",
-  }),
+  name: z
+    .string()
+    .min(2, {
+      message: "Name must be at least 2 characters.",
+    })
+    .max(50, {
+      message: "Name cannot exceed 50 characters.",
+    })
+    .refine((val) => !/[<>]/.test(val), {
+      message: "Name contains invalid characters.",
+    }),
+  email: z
+    .string()
+    .email({
+      message: "Please enter a valid email address.",
+    })
+    .max(100, {
+      message: "Email cannot exceed 100 characters.",
+    })
+    .refine((val) => !/[<>]/.test(val), {
+      message: "Email contains invalid characters.",
+    }),
+  message: z
+    .string()
+    .min(10, {
+      message: "Message must be at least 10 characters.",
+    })
+    .max(1000, {
+      message: "Message cannot exceed 1000 characters.",
+    })
+    .refine((val) => !/(<script|javascript:|onerror=|onload=)/i.test(val), {
+      message: "Message contains invalid content.",
+    }),
+  // Add a honeypot field to catch bots
+  _honeypot: z.string().max(0).optional(),
 })
 
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false)
   const [showDebug, setShowDebug] = useState(false)
   const [debugLogs, setDebugLogs] = useState<string[]>([])
+  const [backgroundElements, setBackgroundElements] = useState<React.ReactNode[]>([])
+
+  // Generate background elements only on client-side
+  useEffect(() => {
+    const leftElements = Array.from({ length: 20 }).map((_, i) => (
+      <div
+        key={`left-${i}`}
+        className="text-xs text-white opacity-30"
+        style={{
+          position: "absolute",
+          top: `${i * 5}%`,
+          left: `${Math.random() * 100}%`,
+        }}
+      >
+        {`{code: ${Math.random().toString(36).substring(2, 8)}}`}
+      </div>
+    ))
+
+    const rightElements = Array.from({ length: 20 }).map((_, i) => (
+      <div
+        key={`right-${i + 20}`}
+        className="text-xs text-white opacity-30"
+        style={{
+          position: "absolute",
+          top: `${i * 5}%`,
+          right: `${Math.random() * 100}%`,
+        }}
+      >
+        {`function() { return ${Math.random().toString(36).substring(2, 8)} }`}
+      </div>
+    ))
+
+    setBackgroundElements([...leftElements, ...rightElements])
+  }, [])
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -34,14 +97,31 @@ export default function Contact() {
       name: "",
       email: "",
       message: "",
+      _honeypot: "",
     },
   })
 
   function onSubmit(values: z.infer<typeof formSchema>) {
+    // Check honeypot field - if it's filled, it's likely a bot
+    if (values._honeypot) {
+      console.log("Bot detected")
+      // Pretend submission was successful but don't actually submit
+      setSubmitted(true)
+      setTimeout(() => setSubmitted(false), 2000)
+      return
+    }
+
+    // Sanitize inputs (additional layer of protection)
+    const sanitizedValues = {
+      name: values.name.replace(/[<>]/g, ""),
+      email: values.email.replace(/[<>]/g, ""),
+      message: values.message.replace(/<script|javascript:|onerror=|onload=/gi, ""),
+    }
+
     // Add debug logs
     const newLogs = [
       `[${new Date().toISOString()}] POST /api/contact`,
-      `[${new Date().toISOString()}] Request payload: ${JSON.stringify(values)}`,
+      `[${new Date().toISOString()}] Request payload: ${JSON.stringify(sanitizedValues)}`,
       `[${new Date().toISOString()}] Validating input...`,
       `[${new Date().toISOString()}] Input validation successful`,
       `[${new Date().toISOString()}] Sending email to recipient: lfurlanettosousa@gmail.com`,
@@ -51,14 +131,16 @@ export default function Contact() {
     setDebugLogs(newLogs)
 
     // Prepare email content
-    const subject = `Portfolio Contact: ${values.name}`
-    const body = `Name: ${values.name}%0D%0AEmail: ${values.email}%0D%0A%0D%0AMessage:%0D%0A${values.message}`
+    const subject = `Portfolio Contact: ${sanitizedValues.name}`
+    const body = `Name: ${sanitizedValues.name}%0D%0AEmail: ${sanitizedValues.email}%0D%0A%0D%0AMessage:%0D%0A${sanitizedValues.message}`
 
-    // Open mail client with pre-filled fields in a new tab
-    const mailtoLink = `mailto:lfurlanettosousa@gmail.com?subject=${encodeURIComponent(subject)}&body=${body}`
-    window.open(mailtoLink, "_blank")
+    // Open mail client with pre-filled fields in a new tab - safely check for window
+    if (typeof window !== "undefined") {
+      const mailtoLink = `mailto:lfurlanettosousa@gmail.com?subject=${encodeURIComponent(subject)}&body=${body}`
+      window.open(mailtoLink, "_blank")
+    }
 
-    console.log(values)
+    console.log(sanitizedValues)
     setSubmitted(true)
     setTimeout(() => {
       setSubmitted(false)
@@ -148,6 +230,7 @@ export default function Contact() {
                                 placeholder="'Your name'"
                                 {...field}
                                 className="border-zinc-700 bg-black text-[#ce9178]"
+                                maxLength={50}
                               />
                             </FormControl>
                           </div>
@@ -168,6 +251,8 @@ export default function Contact() {
                                 placeholder="'your@email.com'"
                                 {...field}
                                 className="border-zinc-700 bg-black text-[#ce9178]"
+                                maxLength={100}
+                                type="email"
                               />
                             </FormControl>
                           </div>
@@ -188,6 +273,7 @@ export default function Contact() {
                                 placeholder="'Tell me about your project...'"
                                 className="min-h-[120px] border-zinc-700 bg-black text-[#ce9178]"
                                 {...field}
+                                maxLength={1000}
                               />
                             </FormControl>
                           </div>
@@ -195,6 +281,21 @@ export default function Contact() {
                         </FormItem>
                       )}
                     />
+
+                    {/* Honeypot field - hidden from users but bots will fill it */}
+                    <div className="hidden" aria-hidden="true">
+                      <FormField
+                        control={form.control}
+                        name="_honeypot"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormControl>
+                              <Input {...field} tabIndex={-1} autoComplete="off" />
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
+                    </div>
 
                     <div className="text-[#9cdcfe]">{`}`};</div>
 
@@ -251,28 +352,9 @@ export default function Contact() {
         </div>
       </div>
 
-      {/* Background pattern */}
+      {/* Background pattern - Now client-side only */}
       <div className="absolute inset-0 z-0 opacity-5">
-        <div className="h-full w-full overflow-hidden">
-          {Array.from({ length: 20 }).map((_, i) => (
-            <div
-              key={i}
-              className="text-xs text-white opacity-30"
-              style={{ position: "absolute", top: `${i * 5}%`, left: Math.random() * 100 + "%" }}
-            >
-              {`{code: ${Math.random().toString(36).substring(2, 8)}}`}
-            </div>
-          ))}
-          {Array.from({ length: 20 }).map((_, i) => (
-            <div
-              key={i + 20}
-              className="text-xs text-white opacity-30"
-              style={{ position: "absolute", top: `${i * 5}%`, right: Math.random() * 100 + "%" }}
-            >
-              {`function() { return ${Math.random().toString(36).substring(2, 8)} }`}
-            </div>
-          ))}
-        </div>
+        <div className="h-full w-full overflow-hidden">{backgroundElements}</div>
       </div>
     </section>
   )
