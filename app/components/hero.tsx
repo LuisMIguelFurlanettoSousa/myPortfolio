@@ -150,7 +150,7 @@ export default function Hero() {
             className="bg-zinc-900 border border-zinc-700 rounded-md p-2 shadow-lg flex items-center"
           >
             <Terminal className="h-4 w-4 text-green-500 mr-1" />
-            <span className="text-xs text-green-500">Terminal</span>
+            <span className="text-xs text-green-500">Contact</span>
           </button>
         ) : null}
       </div>
