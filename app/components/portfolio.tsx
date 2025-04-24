@@ -159,7 +159,7 @@ Características principais:
 - Design totalmente responsivo
 - Formulário de contato estilizado como editor de código`,
       tags: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Framer Motion", "Shadcn/UI"],
-      repository: "https://github.com/LuisMIguelFurlanettoSousa/portfolio",
+      repository: "https://github.com/LuisMIguelFurlanettoSousa/myPortfolio/tree/master",
       status: "🟢 online",
     },
   ]
