@@ -10,7 +10,7 @@ export const generateMetadata = (): Metadata => {
   return {
     title: "Luís Miguel - Portfolio",
     description: "Full-Stack Developer & Software Engineer Portfolio",
-    metadataBase: new URL("https://your-domain.com"), // Replace with your actual domain
+    metadataBase: new URL("https://lmfs.netlify.app/"),
     robots: {
       index: true,
       follow: true,
