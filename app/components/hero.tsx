@@ -12,7 +12,7 @@ export default function Hero() {
   const [terminalOutput, setTerminalOutput] = useState<string[]>([])
   const [isTyping, setIsTyping] = useState(false)
   const [showTerminal, setShowTerminal] = useState(false)
-  const [loginDate, setLoginDate] = useState("YYYY-MM-DD HH:MM:SS")
+  // const [loginDate, setLoginDate] = useState("YYYY-MM-DD HH:MM:SS")
 
   // Add this useEffect to handle window-based initialization
   useEffect(() => {
@@ -23,10 +23,10 @@ export default function Hero() {
   }, [])
 
   // Update date string on client-side only
-  useEffect(() => {
-    const now = new Date()
-    setLoginDate(`${now.toISOString().split("T")[0]} ${now.toTimeString().split(" ")[0]}`)
-  }, [])
+  // useEffect(() => {
+  //   const now = new Date()
+  //   setLoginDate(`${now.toISOString().split("T")[0]} ${now.toTimeString().split(" ")[0]}`)
+  // }, [])
 
   useEffect(() => {
     if (!canvasRef.current) return
@@ -182,7 +182,7 @@ export default function Hero() {
 
             {/* Terminal content */}
             <div className="p-3 font-mono text-xs">
-              <div className="mb-1 text-green-500">Last login: {loginDate}</div>
+              {/* <div className="mb-1 text-green-500">Last login: {loginDate}</div> */}
               <div className="flex space-x-4 mt-2">
                 <a
                   href="https://github.com/LuisMIguelFurlanettoSousa"
