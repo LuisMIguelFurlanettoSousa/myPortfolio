@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 type Skill = {
   name: string
@@ -12,6 +12,12 @@ type Skill = {
 
 export default function TechStack() {
   const [filter, setFilter] = useState<string>("language")
+  const [dateString, setDateString] = useState("YYYY-MM-DD")
+
+  // Update date string on client-side only
+  useEffect(() => {
+    setDateString(new Date().toISOString().split("T")[0])
+  }, [])
 
   const skills: Skill[] = [
     // Languages
@@ -232,7 +238,7 @@ export default function TechStack() {
           </div>
 
           <div className="mt-8 text-center font-mono text-xs text-zinc-500">
-            <code>/* Skills last updated: {new Date().toLocaleDateString()} */</code>
+            <code>/* Skills last updated: {dateString} */</code>
           </div>
         </motion.div>
       </div>

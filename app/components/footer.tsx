@@ -1,11 +1,19 @@
+"use client"
+
+import { useState, useEffect } from "react"
+
 export default function Footer() {
+  const [year, setYear] = useState("2024")
+
+  useEffect(() => {
+    setYear(new Date().getFullYear().toString())
+  }, [])
+
   return (
     <footer className="border-t border-zinc-800 bg-black py-8">
       <div className="container mx-auto px-4">
         <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
-          <p className="text-sm text-gray-400">
-            © {new Date().getFullYear()} Luís Miguel Furlanetto Sousa. All rights reserved.
-          </p>
+          <p className="text-sm text-gray-400">© {year} Luís Miguel Furlanetto Sousa. All rights reserved.</p>
           <div className="flex gap-6">
             <a
               href="https://github.com/LuisMIguelFurlanettoSousa"
