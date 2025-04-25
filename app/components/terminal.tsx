@@ -4,14 +4,24 @@ import { useState, useEffect, useRef } from "react"
 import { motion } from "framer-motion"
 
 export default function Terminal() {
-  const [typedText, setTypedText] = useState("")
+  // Referência para o elemento do terminal
+  const terminalRef = useRef(null)
+  // Estado para controlar o cursor piscante
   const [showCursor, setShowCursor] = useState(true)
-  const [currentCommand, setCurrentCommand] = useState(0)
-  const [isVisible, setIsVisible] = useState(false)
-  const terminalRef = useRef<HTMLDivElement>(null)
+  // Estado para armazenar o texto atual exibido
+  const [displayText, setDisplayText] = useState("")
+  // Estado para controlar se o terminal está visível
+  const [isInView, setIsInView] = useState(false)
+  // Estado para rastrear o comando atual
+  const [currentCommandIndex, setCurrentCommandIndex] = useState(0)
+  // Referência para rastrear se o componente está montado
+  const isMountedRef = useRef(true)
+  // Referência para armazenar timers ativos
+  const timersRef = useRef([])
 
+  // Lista de comandos e respostas
   const commands = [
-    { prompt: "user@portfolio:~$ ", command: "whoami", delay: 0 },
+    { prompt: "user@portfolio:~$ ", command: "whoami", delay: 50 },
     {
       prompt: "",
       command: `
@@ -24,7 +34,7 @@ LinkedIn: Luís Miguel Furlanetto
 `,
       delay: 30,
     },
-    { prompt: "user@portfolio:~$ ", command: "cat education.txt", delay: 100 },
+    { prompt: "user@portfolio:~$ ", command: "cat education.txt", delay: 50 },
     {
       prompt: "",
       command: `
@@ -38,7 +48,7 @@ Idiomas:
 `,
       delay: 20,
     },
-    { prompt: "user@portfolio:~$ ", command: "ls -la skills/", delay: 100 },
+    { prompt: "user@portfolio:~$ ", command: "ls -la skills/", delay: 50 },
     {
       prompt: "",
       command: `
@@ -65,7 +75,7 @@ drwxr-xr-x  5 luis  staff  160 Apr 22 19:48 databases/
 `,
       delay: 10,
     },
-    { prompt: "user@portfolio:~$ ", command: "cat objective.txt", delay: 100 },
+    { prompt: "user@portfolio:~$ ", command: "cat objective.txt", delay: 50 },
     {
       prompt: "",
       command: `
@@ -78,7 +88,7 @@ valor às equipes e projetos.
 `,
       delay: 15,
     },
-    { prompt: "user@portfolio:~$ ", command: "ls -la projects/", delay: 100 },
+    { prompt: "user@portfolio:~$ ", command: "ls -la projects/", delay: 50 },
     {
       prompt: "",
       command: `
@@ -94,7 +104,7 @@ drwxr-xr-x 10 luis  staff  320 Apr 22 19:48 ..
 `,
       delay: 10,
     },
-    { prompt: "user@portfolio:~$ ", command: "ls -la courses/", delay: 100 },
+    { prompt: "user@portfolio:~$ ", command: "ls -la courses/", delay: 50 },
     {
       prompt: "",
       command: `
@@ -113,83 +123,159 @@ drwxr-xr-x 10 luis  staff  320 Apr 22 19:48 ..
     },
   ]
 
-  // Detect when terminal is in viewport
+  // Limpar todos os timers quando o componente for desmontado
   useEffect(() => {
-    if (typeof window === "undefined") return
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          setIsVisible(true)
-        }
-      },
-      { threshold: 0.3 },
-    )
-
-    if (terminalRef.current) {
-      observer.observe(terminalRef.current)
-    }
-
     return () => {
-      if (terminalRef.current) {
-        observer.unobserve(terminalRef.current)
-      }
+      isMountedRef.current = false
+      // Limpar todos os timers pendentes
+      timersRef.current.forEach(timer => clearTimeout(timer))
     }
   }, [])
 
+  // Efeito para o cursor piscante
   useEffect(() => {
-    // Cursor blinking effect
     const cursorInterval = setInterval(() => {
-      setShowCursor((prev) => !prev)
+      if (isMountedRef.current) {
+        setShowCursor(prev => !prev)
+      }
     }, 530)
-
+    
     return () => clearInterval(cursorInterval)
   }, [])
 
+  // Verificar se o terminal está na viewport
   useEffect(() => {
-    // Only start typing commands when the terminal is visible
-    if (!isVisible || currentCommand >= commands.length) return
+    // Em dispositivos móveis, simplesmente inicie a animação
+    if (typeof window !== "undefined" && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+      setIsInView(true)
+      return
+    }
+    
+    // Em outros dispositivos, use IntersectionObserver se disponível
+    if (typeof window !== "undefined" && typeof IntersectionObserver !== "undefined" && terminalRef.current) {
+      try {
+        const observer = new IntersectionObserver(
+          entries => {
+            if (entries[0].isIntersecting && isMountedRef.current) {
+              setIsInView(true)
+            }
+          },
+          { threshold: 0.1 }
+        )
+        
+        observer.observe(terminalRef.current)
+        
+        return () => {
+          if (terminalRef.current) {
+            observer.unobserve(terminalRef.current)
+          }
+        }
+      } catch (error) {
+        // Fallback se houver erro
+        setIsInView(true)
+      }
+    } else {
+      // Fallback se não houver IntersectionObserver
+      setIsInView(true)
+    }
+  }, [])
 
-    const command = commands[currentCommand]
-    let currentIndex = 0
-    const commandText = command.command
-
-    // Reset typed text when starting a new command
-    setTypedText(command.prompt)
-
-    // Type out the command character by character
-    const typeNextChar = () => {
-      if (currentIndex < commandText.length) {
-        const nextChar = commandText[currentIndex]
-        setTypedText((prev) => prev + nextChar)
-        currentIndex++
-        setTimeout(typeNextChar, command.delay)
-      } else {
-        // Move to next command after a delay
-        setTimeout(() => {
-          setCurrentCommand((prev) => prev + 1)
-        }, 1000)
+  // Função para digitar um par de comando atual
+  const typeCurrentCommand = () => {
+    // Limpar timers existentes
+    timersRef.current.forEach(timer => clearTimeout(timer))
+    timersRef.current = []
+    
+    // Verificar se existem mais comandos para digitar
+    if (currentCommandIndex >= commands.length || !isInView) {
+      return
+    }
+    
+    // Obter par atual (comando e resposta)
+    const currentCmdIndex = Math.floor(currentCommandIndex / 2) * 2;
+    const cmd = commands[currentCmdIndex];
+    const response = commands[currentCmdIndex + 1];
+    
+    // Limpar terminal para o novo comando
+    setDisplayText("");
+    
+    // Função auxiliar para adicionar texto com segurança
+    const safeAppendText = (text) => {
+      if (isMountedRef.current) {
+        setDisplayText(prev => prev + text)
       }
     }
-
-    // Start typing
-    setTimeout(typeNextChar, 100)
-
-    return () => {
-      // No need for clearInterval as we're using setTimeout
+    
+    let totalDelay = 0;
+    
+    // Digitar o prompt
+    safeAppendText(cmd.prompt);
+    totalDelay += 200;
+    
+    // Digitar o comando caractere por caractere
+    for (let i = 0; i < cmd.command.length; i++) {
+      const charTimer = setTimeout(() => {
+        safeAppendText(cmd.command[i])
+      }, totalDelay);
+      timersRef.current.push(charTimer);
+      totalDelay += cmd.delay;
     }
-  }, [currentCommand, isVisible])
+    
+    // Adicionar quebra de linha após o comando
+    const lineBreakTimer = setTimeout(() => {
+      safeAppendText("\n");
+    }, totalDelay);
+    timersRef.current.push(lineBreakTimer);
+    totalDelay += 300;
+    
+    // Digitar a resposta caractere por caractere
+    for (let i = 0; i < response.command.length; i++) {
+      const charTimer = setTimeout(() => {
+        safeAppendText(response.command[i])
+      }, totalDelay);
+      timersRef.current.push(charTimer);
+      totalDelay += response.delay;
+    }
+    
+    // Programar o próximo par de comando após um atraso
+    const nextCommandTimer = setTimeout(() => {
+      if (isMountedRef.current) {
+        setCurrentCommandIndex(currentCommandIndex + 2);
+      }
+    }, totalDelay + 1500);
+    timersRef.current.push(nextCommandTimer);
+  };
+  
+  // Efeito para digitar comandos quando o índice atual ou visibilidade mudar
+  useEffect(() => {
+    if (!isInView) return;
+    typeCurrentCommand();
+  }, [currentCommandIndex, isInView]);
+
+  // Função para rolar automaticamente para o final do terminal
+  const scrollToBottom = () => {
+    if (terminalRef.current) {
+      const content = terminalRef.current.querySelector('.terminal-content')
+      if (content) {
+        content.scrollTop = content.scrollHeight
+      }
+    }
+  }
+
+  // Rolar para o final cada vez que o texto muda
+  useEffect(() => {
+    scrollToBottom()
+  }, [displayText])
 
   return (
-    <section className="py-20" ref={terminalRef}>
-      <motion.div
-        className="container mx-auto px-4"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
-      >
-        <div className="mx-auto max-w-4xl">
+    <section className="py-20">
+      <div className="container mx-auto px-4" ref={terminalRef}>
+        <motion.div
+          className="mx-auto max-w-4xl"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
           <div className="rounded-lg overflow-hidden border border-zinc-700 shadow-lg">
             {/* Terminal header */}
             <div className="bg-zinc-800 px-4 py-2 flex items-center">
@@ -202,15 +288,15 @@ drwxr-xr-x 10 luis  staff  320 Apr 22 19:48 ..
             </div>
 
             {/* Terminal content */}
-            <div className="bg-zinc-900 p-4 font-mono text-sm h-[400px] overflow-y-auto relative">
-              <pre className="whitespace-pre-wrap text-zinc-300">
-                {typedText}
-                {showCursor && currentCommand < commands.length && <span className="text-white">▋</span>}
-              </pre>
+            <div className="bg-zinc-900 p-4 font-mono text-sm h-[400px] overflow-y-auto terminal-content">
+              <div className="whitespace-pre-wrap text-zinc-300">
+                {displayText}
+                {showCursor && <span className="text-white">▋</span>}
+              </div>
             </div>
           </div>
-        </div>
-      </motion.div>
+        </motion.div>
+      </div>
     </section>
   )
 }
