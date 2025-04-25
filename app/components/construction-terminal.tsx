@@ -9,12 +9,7 @@ export default function ConstructionTerminal() {
   const [showCursor, setShowCursor] = useState(true)
   const [currentCommand, setCurrentCommand] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
-  const [dateString, setDateString] = useState("YYYY-MM-DD")
   const terminalRef = useRef(null)
-
-    useEffect(() => {
-      setDateString(new Date().toISOString().split("T")[0])
-    }, [])
 
   const commands = [
     { prompt: "visitor@portfolio:~$ ", command: "load-more-features", delay: 80 },
@@ -162,7 +157,7 @@ Please check back later or contact me for more information.`,
           <div className="mt-6 text-center text-zinc-500 text-sm font-mono">
             <p>This portfolio is actively being developed. New features coming soon.</p>
             <p className="mt-2">
-              <code>last_updated: {dateString}</code>
+              <code>last_updated: 04-25-2025</code>
             </p>
           </div>
         </motion.div>

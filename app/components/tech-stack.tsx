@@ -12,12 +12,12 @@ type Skill = {
 
 export default function TechStack() {
   const [filter, setFilter] = useState<string>("language")
-  const [dateString, setDateString] = useState("YYYY-MM-DD")
+  // const [dateString, setDateString] = useState("YYYY-MM-DD")
 
-  // Update date string on client-side only
-  useEffect(() => {
-    setDateString(new Date().toISOString().split("T")[0])
-  }, [])
+  // // Update date string on client-side only
+  // useEffect(() => {
+  //   setDateString(new Date().toISOString().split("T")[0])
+  // }, [])
 
   const skills: Skill[] = [
     // Languages
@@ -238,7 +238,7 @@ export default function TechStack() {
           </div>
 
           <div className="mt-8 text-center font-mono text-xs text-zinc-500">
-            <code>/* Skills last updated: {dateString} */</code>
+            <code>/* Skills last updated: 04-25-2025 */</code>
           </div>
         </motion.div>
       </div>
