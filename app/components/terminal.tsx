@@ -4,22 +4,24 @@ import { useState, useEffect, useRef } from "react"
 import { motion } from "framer-motion"
 
 export default function Terminal() {
-  // Referência para o elemento do terminal
+  // Terminal element reference
   const terminalRef = useRef(null)
-  // Estado para controlar o cursor piscante
+  // State for blinking cursor
   const [showCursor, setShowCursor] = useState(true)
-  // Estado para armazenar o texto atual exibido
+  // State for displayed text
   const [displayText, setDisplayText] = useState("")
-  // Estado para controlar se o terminal está visível
+  // State to track if terminal is visible
   const [isInView, setIsInView] = useState(false)
-  // Estado para rastrear o comando atual
+  // State to track current command
   const [currentCommandIndex, setCurrentCommandIndex] = useState(0)
-  // Referência para rastrear se o componente está montado
+  // Reference to track if component is mounted
   const isMountedRef = useRef(true)
-  // Referência para armazenar timers ativos
+  // Reference to store active timers
   const timersRef = useRef([])
+  // Mobile detection state
+  const [isMobile, setIsMobile] = useState(false)
 
-  // Lista de comandos e respostas
+  // List of commands and responses
   const commands = [
     { prompt: "user@portfolio:~$ ", command: "whoami", delay: 50 },
     {
@@ -44,7 +46,7 @@ Conclusão prevista: 2026
 
 Idiomas:
 - Português (nativo)
-- Inglês (básico)
+- Inglês (Intermediário)
 `,
       delay: 20,
     },
@@ -123,16 +125,26 @@ drwxr-xr-x 10 luis  staff  320 Apr 22 19:48 ..
     },
   ]
 
-  // Limpar todos os timers quando o componente for desmontado
+  // Detect mobile device on mount
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const mobileCheck = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      )
+      setIsMobile(mobileCheck)
+    }
+  }, [])
+
+  // Clean up all timers when the component unmounts
   useEffect(() => {
     return () => {
       isMountedRef.current = false
-      // Limpar todos os timers pendentes
+      // Clear all pending timers
       timersRef.current.forEach(timer => clearTimeout(timer))
     }
   }, [])
 
-  // Efeito para o cursor piscante
+  // Effect for blinking cursor
   useEffect(() => {
     const cursorInterval = setInterval(() => {
       if (isMountedRef.current) {
@@ -143,21 +155,22 @@ drwxr-xr-x 10 luis  staff  320 Apr 22 19:48 ..
     return () => clearInterval(cursorInterval)
   }, [])
 
-  // Verificar se o terminal está na viewport
+  // Check if terminal is in viewport
   useEffect(() => {
-    // Em dispositivos móveis, simplesmente inicie a animação
-    if (typeof window !== "undefined" && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+    // On mobile devices, just start the animation immediately
+    if (isMobile) {
       setIsInView(true)
       return
     }
     
-    // Em outros dispositivos, use IntersectionObserver se disponível
+    // On other devices, use IntersectionObserver if available
     if (typeof window !== "undefined" && typeof IntersectionObserver !== "undefined" && terminalRef.current) {
       try {
         const observer = new IntersectionObserver(
           entries => {
             if (entries[0].isIntersecting && isMountedRef.current) {
               setIsInView(true)
+              observer.disconnect()
             }
           },
           { threshold: 0.1 }
@@ -166,93 +179,98 @@ drwxr-xr-x 10 luis  staff  320 Apr 22 19:48 ..
         observer.observe(terminalRef.current)
         
         return () => {
-          if (terminalRef.current) {
-            observer.unobserve(terminalRef.current)
-          }
+          observer.disconnect()
         }
       } catch (error) {
-        // Fallback se houver erro
+        console.error("IntersectionObserver error:", error)
+        // Fallback if there's an error
         setIsInView(true)
       }
     } else {
-      // Fallback se não houver IntersectionObserver
+      // Fallback if there's no IntersectionObserver
       setIsInView(true)
     }
-  }, [])
+  }, [isMobile])
 
-  // Função para digitar um par de comando atual
+  // Function to type the current command pair
   const typeCurrentCommand = () => {
-    // Limpar timers existentes
+    // Clear existing timers
     timersRef.current.forEach(timer => clearTimeout(timer))
     timersRef.current = []
     
-    // Verificar se existem mais comandos para digitar
+    // Check if there are more commands to type
     if (currentCommandIndex >= commands.length || !isInView) {
       return
     }
     
-    // Obter par atual (comando e resposta)
-    const currentCmdIndex = Math.floor(currentCommandIndex / 2) * 2;
-    const cmd = commands[currentCmdIndex];
-    const response = commands[currentCmdIndex + 1];
+    // Get current pair (command and response)
+    const currentCmdIndex = Math.floor(currentCommandIndex / 2) * 2
+    const cmd = commands[currentCmdIndex]
+    const response = commands[currentCmdIndex + 1]
     
-    // Limpar terminal para o novo comando
-    setDisplayText("");
+    // Clear terminal for new command
+    setDisplayText("")
     
-    // Função auxiliar para adicionar texto com segurança
+    // Helper function to safely append text
     const safeAppendText = (text) => {
       if (isMountedRef.current) {
         setDisplayText(prev => prev + text)
       }
     }
     
-    let totalDelay = 0;
+    let totalDelay = 0
     
-    // Digitar o prompt
-    safeAppendText(cmd.prompt);
-    totalDelay += 200;
+    // Type the prompt
+    safeAppendText(cmd.prompt)
+    totalDelay += 200
     
-    // Digitar o comando caractere por caractere
+    // Type the command character by character
     for (let i = 0; i < cmd.command.length; i++) {
       const charTimer = setTimeout(() => {
         safeAppendText(cmd.command[i])
-      }, totalDelay);
-      timersRef.current.push(charTimer);
-      totalDelay += cmd.delay;
+      }, totalDelay)
+      timersRef.current.push(charTimer)
+      totalDelay += cmd.delay
     }
     
-    // Adicionar quebra de linha após o comando
+    // Add line break after command
     const lineBreakTimer = setTimeout(() => {
-      safeAppendText("\n");
-    }, totalDelay);
-    timersRef.current.push(lineBreakTimer);
-    totalDelay += 300;
+      safeAppendText("\n")
+    }, totalDelay)
+    timersRef.current.push(lineBreakTimer)
+    totalDelay += 300
     
-    // Digitar a resposta caractere por caractere
+    // Type the response character by character
     for (let i = 0; i < response.command.length; i++) {
       const charTimer = setTimeout(() => {
         safeAppendText(response.command[i])
-      }, totalDelay);
-      timersRef.current.push(charTimer);
-      totalDelay += response.delay;
+      }, totalDelay)
+      timersRef.current.push(charTimer)
+      totalDelay += response.delay
     }
     
-    // Programar o próximo par de comando após um atraso
+    // Schedule next command pair after a delay
     const nextCommandTimer = setTimeout(() => {
       if (isMountedRef.current) {
-        setCurrentCommandIndex(currentCommandIndex + 2);
+        setCurrentCommandIndex(prevIndex => prevIndex + 2)
       }
-    }, totalDelay + 1500);
-    timersRef.current.push(nextCommandTimer);
-  };
+    }, totalDelay + 1500)
+    timersRef.current.push(nextCommandTimer)
+  }
   
-  // Efeito para digitar comandos quando o índice atual ou visibilidade mudar
+  // Effect to type commands when current index or visibility changes
   useEffect(() => {
-    if (!isInView) return;
-    typeCurrentCommand();
-  }, [currentCommandIndex, isInView]);
+    if (isInView) {
+      // Add a small delay before starting typing
+      const initTimer = setTimeout(() => {
+        typeCurrentCommand()
+      }, 500)
+      
+      return () => clearTimeout(initTimer)
+    }
+  }, [currentCommandIndex, isInView])
 
-  // Função para rolar automaticamente para o final do terminal
+  // Function to scroll to the bottom of the terminal
   const scrollToBottom = () => {
     if (terminalRef.current) {
       const content = terminalRef.current.querySelector('.terminal-content')
@@ -262,7 +280,7 @@ drwxr-xr-x 10 luis  staff  320 Apr 22 19:48 ..
     }
   }
 
-  // Rolar para o final cada vez que o texto muda
+  // Scroll to bottom whenever text changes
   useEffect(() => {
     scrollToBottom()
   }, [displayText])
@@ -288,7 +306,7 @@ drwxr-xr-x 10 luis  staff  320 Apr 22 19:48 ..
             </div>
 
             {/* Terminal content */}
-            <div className="bg-zinc-900 p-4 font-mono text-sm h-[400px] overflow-y-auto terminal-content">
+            <div className="bg-zinc-900 p-4 font-mono text-sm h-96 overflow-y-auto terminal-content">
               <div className="whitespace-pre-wrap text-zinc-300">
                 {displayText}
                 {showCursor && <span className="text-white">▋</span>}
