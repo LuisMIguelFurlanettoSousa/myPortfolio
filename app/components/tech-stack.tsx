@@ -16,11 +16,29 @@ export default function TechStack() {
 
   // // Update date string on client-side only
   // useEffect(() => {
-  //   setDateString(new Date().toISOString().split("T")[0])
-  // }, [])
-
-  const skills: Skill[] = [
-    // Languages
+    //   setDateString(new Date().toISOString().split("T")[0])
+    // }, [])
+    
+    const skills: Skill[] = [
+      // Languages
+      {
+        name: "Java",
+        category: "language",
+        icon: "Java",
+        description: "Studying",
+      },
+      {
+        name: "TypeScript",
+        category: "language",
+        icon: "TS",
+        description: "Used in 2 projects",
+      },
+      {
+        name: "Python",
+        category: "language",
+        icon: "PY",
+        description: "Used in 3 projects",
+      },
     {
       name: "JavaScript",
       category: "language",
@@ -28,43 +46,13 @@ export default function TechStack() {
       description: "Used in 2 projects",
     },
     {
-      name: "Python",
-      category: "language",
-      icon: "PY",
-      description: "Used in 3 projects",
-    },
-    {
       name: "C",
       category: "language",
       icon: "C",
       description: "Used in 1 projects",
     },
-    {
-      name: "Java",
-      category: "language",
-      icon: "Java",
-      description: "Studying",
-    },
-    {
-      name: "TypeScript",
-      category: "language",
-      icon: "TS",
-      description: "Used in 2 projects",
-    },
 
     // Frameworks
-    {
-      name: "Node.js",
-      category: "framework",
-      icon: "NODE",
-      description: "1 year experience",
-    },
-    {
-      name: "Express.js",
-      category: "framework",
-      icon: "EXP",
-      description: "1 year experience",
-    },
     {
       name: "React",
       category: "framework",
@@ -75,6 +63,18 @@ export default function TechStack() {
       name: "Next",
       category: "framework",
       icon: "NEXT",
+      description: "1 year experience",
+    },
+    {
+      name: "Node.js",
+      category: "framework",
+      icon: "NODE",
+      description: "1 year experience",
+    },
+    {
+      name: "Express.js",
+      category: "framework",
+      icon: "EXP",
       description: "1 year experience",
     },
     {
@@ -92,18 +92,6 @@ export default function TechStack() {
 
     // Databases
     {
-      name: "MongoDB",
-      category: "database",
-      icon: "MONGO",
-      description: "850 queries written",
-    },
-    {
-      name: "MySQL",
-      category: "database",
-      icon: "SQL",
-      description: "1200 queries written",
-    },
-    {
       name: "SQL Server",
       category: "database",
       icon: "MSSQL",
@@ -114,6 +102,18 @@ export default function TechStack() {
       category: "database",
       icon: "ORA",
       description: "500 queries written",
+    },
+    {
+      name: "MongoDB",
+      category: "database",
+      icon: "MONGO",
+      description: "850 queries written",
+    },
+    {
+      name: "MySQL",
+      category: "database",
+      icon: "SQL",
+      description: "1200 queries written",
     },
 
     // Tools
@@ -130,18 +130,6 @@ export default function TechStack() {
       description: "Daily workflow integration",
     },
     {
-      name: "Scrum",
-      category: "tool",
-      icon: "SCR",
-      description: "Daily workflow integration",
-    },
-    {
-      name: "Kanban",
-      category: "tool",
-      icon: "KAN",
-      description: "Daily workflow integration",
-    },
-    {
       name: "Figma",
       category: "tool",
       icon: "FI",
@@ -150,20 +138,33 @@ export default function TechStack() {
 
     // Methodologies
     {
-      name: "TDD",
+      name: "Scrum",
       category: "methodology",
+      icon: "SCR",
+      description: "Daily workflow integration",
+    },
+    {
+      name: "Kanban",
+      category: "methodology",
+      icon: "KAN",
+      description: "Daily workflow integration",
+    },
+    //Test
+    {
+      name: "TDD",
+      category: "test",
       icon: "TDD",
       description: "Applied in team projects",
     },
     {
       name: "BDD",
-      category: "methodology",
+      category: "test",
       icon: "BDD",
       description: "Applied in team projects",
     },
     {
       name: "DDD",
-      category: "methodology",
+      category: "test",
       icon: "DDD",
       description: "Applied in team projects",
     },
@@ -175,6 +176,7 @@ export default function TechStack() {
     { id: "database", name: "Databases" },
     { id: "tool", name: "Tools" },
     { id: "methodology", name: "Methodologies" },
+    { id: "test", name: "Test"},
     { id: null, name: "All" },
   ]
 

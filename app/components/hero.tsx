@@ -158,7 +158,7 @@ export default function Hero() {
             className="bg-zinc-900 border border-zinc-700 rounded-md p-2 shadow-lg flex items-center"
           >
             <Terminal className="h-4 w-4 text-green-500 mr-1" />
-            <span className="text-xs text-green-500">Terminal</span>
+            <span className="text-xs text-green-500">Contact</span>
           </button>
         ) : null}
       </div>
@@ -182,7 +182,6 @@ export default function Hero() {
 
             {/* Terminal content */}
             <div className="p-3 font-mono text-xs">
-              {/* <div className="mb-1 text-green-500">Last login: {loginDate}</div> */}
               <div className="flex space-x-4 mt-2">
                 <a
                   href="https://github.com/LuisMIguelFurlanettoSousa"
