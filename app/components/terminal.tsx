@@ -46,7 +46,7 @@ Conclusão prevista: 2026
 
 Idiomas:
 - Português (nativo)
-- Inglês (básico)
+- Inglês (Intermediário)
 `,
       delay: 20,
     },

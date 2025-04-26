@@ -102,7 +102,7 @@ export default function EasterEggs() {
       case "about":
         output.push(
           "Luís Miguel Furlanetto Sousa",
-          "Full-Stack Developer specializing in Node.js and Python",
+          "Full-Stack Developer",
           "Currently studying Analysis and Systems Development at Uniube",
           "Expected graduation: 2026",
           "",
