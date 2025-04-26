@@ -100,18 +100,17 @@ drwxr-xr-x 10 luis  staff  320 Apr 22 19:48 ..
   ]
 
   // Conteúdo estático para exibir em dispositivos móveis
-  const staticContent = `user@portfolio:~$ ls -la courses/
+  const staticContent = `user@portfolio:~$ cat courses.txt
 total 8
-drwxr-xr-x  2 luis  staff  192 Apr 22 19:48 .
-drwxr-xr-x 10 luis  staff  320 Apr 22 19:48 ..
--rw-r--r--  1 luis  staff  11.9K Apr 22 19:48 Análise e Desenvolvimento de Sistemas (Uniube)
--rw-r--r--  1 luis  staff  4.2K Apr 22 19:48 JavaViradoNoJiraya.java
--rw-r--r--  1 luis  staff  3.8K Apr 22 19:48 FullStack (Luiz Otávio Miranda).ts
--rw-r--r--  1 luis  staff  4.4K Apr 22 19:48 Python (Luiz Otávio Miranda).py
--rw-r--r--  1 luis  staff  1.4K Apr 22 19:48 Git (Hora de Codar).ts
--rw-r--r--  1 luis  staff  7.8K Apr 22 19:48 Figma
--rw-r--r--  1 luis  staff  2.7K Apr 22 19:48 Html e css (Curso em video)
--rw-r--r--  1 luis  staff  3.9K Apr 22 19:48 Python (Curso em video).py`
+
+Análise e Desenvolvimento de Sistemas (Uniube)
+JavaViradoNoJiraya.java
+FullStack (Luiz Otávio Miranda).ts
+Python (Luiz Otávio Miranda).py
+Git (Hora de Codar).git
+Figma
+Html e css (Curso em video)
+Python (Curso em video).py`
 
   // Função melhorada para detectar dispositivos móveis (incluindo Xiaomi)
   const checkIfMobile = () => {
