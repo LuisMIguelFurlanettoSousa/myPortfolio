@@ -83,7 +83,7 @@ drwxr-xr-x 10 luis  staff  320 Apr 22 19:48 ..
     {
       prompt: "",
       command: `
-total 7
+total 8
 drwxr-xr-x  2 luis  staff  192 Apr 22 19:48 .
 drwxr-xr-x 10 luis  staff  320 Apr 22 19:48 ..
 -rw-r--r--  1 luis  staff  11.9K Apr 22 19:48 Análise e Desenvolvimento de Sistemas (Uniube)
@@ -100,59 +100,111 @@ drwxr-xr-x 10 luis  staff  320 Apr 22 19:48 ..
   ]
 
   // Conteúdo estático para exibir em dispositivos móveis
-  const staticContent = `user@portfolio:~$ cat courses.txt
-total 7
+  const staticContent = `user@portfolio:~$ ls -la courses/
+total 8
+drwxr-xr-x  2 luis  staff  192 Apr 22 19:48 .
+drwxr-xr-x 10 luis  staff  320 Apr 22 19:48 ..
+-rw-r--r--  1 luis  staff  11.9K Apr 22 19:48 Análise e Desenvolvimento de Sistemas (Uniube)
+-rw-r--r--  1 luis  staff  4.2K Apr 22 19:48 JavaViradoNoJiraya.java
+-rw-r--r--  1 luis  staff  3.8K Apr 22 19:48 FullStack (Luiz Otávio Miranda).ts
+-rw-r--r--  1 luis  staff  4.4K Apr 22 19:48 Python (Luiz Otávio Miranda).py
+-rw-r--r--  1 luis  staff  1.4K Apr 22 19:48 Git (Hora de Codar).ts
+-rw-r--r--  1 luis  staff  7.8K Apr 22 19:48 Figma
+-rw-r--r--  1 luis  staff  2.7K Apr 22 19:48 Html e css (Curso em video)
+-rw-r--r--  1 luis  staff  3.9K Apr 22 19:48 Python (Curso em video).py`
 
-Análise e Desenvolvimento de Sistemas (Uniube)
-JavaViradoNoJiraya.java
-FullStack (Luiz Otávio Miranda).ts
-Python (Luiz Otávio Miranda).py
-Git (Hora de Codar).git
-Figma
-Html e css (Curso em video)
-Python (Curso em video).py`
+  // Função melhorada para detectar dispositivos móveis (incluindo Xiaomi)
+  const checkIfMobile = () => {
+    if (typeof window === "undefined") return false;
+    
+    // Detecção por UserAgent (abordagem tradicional)
+    const userAgentCheck = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|MI\s|Redmi|MIUI|XIAOMI/i.test(
+      navigator.userAgent
+    );
+    
+    // Detecção por tamanho de tela (abordagem alternativa)
+    const screenCheck = window.innerWidth <= 768;
+    
+    // Detecção por recursos de toque (outra abordagem alternativa)
+    const touchCheck = 'ontouchstart' in window || 
+                     navigator.maxTouchPoints > 0 ||
+                     (navigator.msMaxTouchPoints && navigator.msMaxTouchPoints > 0);
+    
+    // Para dispositivos Xiaomi específicos, verificação adicional
+    const isXiaomiCheck = /MI\s|Redmi|MIUI|XIAOMI/i.test(navigator.userAgent) || 
+                         /HM\sNote/i.test(navigator.userAgent) ||
+                         /Mi\sNote/i.test(navigator.userAgent);
+    
+    // Retorna true se qualquer uma das verificações for positiva
+    return userAgentCheck || (screenCheck && touchCheck) || isXiaomiCheck;
+  };
 
   // Detectar dispositivo móvel
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const checkMobile = () => {
-        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
-      }
-      
-      setIsMobile(checkMobile())
+      // Verificação imediata na montagem
+      const isMobileDevice = checkIfMobile();
+      setIsMobile(isMobileDevice);
       
       // Se for móvel, definir o conteúdo estático imediatamente
-      if (checkMobile()) {
-        setDisplayText(staticContent)
+      if (isMobileDevice) {
+        setDisplayText(staticContent);
       }
+      
+      // Adicionar listener de redimensionamento para ajustar se necessário
+      const handleResize = () => {
+        const newIsMobile = checkIfMobile();
+        if (newIsMobile !== isMobile) {
+          setIsMobile(newIsMobile);
+          if (newIsMobile) {
+            setDisplayText(staticContent);
+          }
+        }
+      };
+      
+      window.addEventListener('resize', handleResize);
+      
+      // Verificação de força bruta para garantir que funcione em dispositivos Xiaomi
+      const forceCheckTimeout = setTimeout(() => {
+        const forcedCheck = checkIfMobile();
+        if (forcedCheck && !isMobile) {
+          setIsMobile(true);
+          setDisplayText(staticContent);
+        }
+      }, 500);
+      
+      return () => {
+        window.removeEventListener('resize', handleResize);
+        clearTimeout(forceCheckTimeout);
+      };
     }
-  }, [])
+  }, []);
 
   // Limpar todos os timers quando o componente for desmontado
   useEffect(() => {
     return () => {
-      isMountedRef.current = false
+      isMountedRef.current = false;
       // Limpar todos os timers pendentes
-      timersRef.current.forEach(timer => clearTimeout(timer))
-    }
-  }, [])
+      timersRef.current.forEach(timer => clearTimeout(timer));
+    };
+  }, []);
 
   // Efeito para o cursor piscante
   useEffect(() => {
     const cursorInterval = setInterval(() => {
       if (isMountedRef.current) {
-        setShowCursor(prev => !prev)
+        setShowCursor(prev => !prev);
       }
-    }, 530)
+    }, 530);
     
-    return () => clearInterval(cursorInterval)
-  }, [])
+    return () => clearInterval(cursorInterval);
+  }, []);
 
   // Verificar se o terminal está na viewport (apenas para desktop)
   useEffect(() => {
     // Pular se for dispositivo móvel
     if (isMobile) {
-      return
+      return;
     }
     
     // Em desktop, use IntersectionObserver se disponível
@@ -161,28 +213,28 @@ Python (Curso em video).py`
         const observer = new IntersectionObserver(
           entries => {
             if (entries[0].isIntersecting && isMountedRef.current) {
-              setIsInView(true)
+              setIsInView(true);
             }
           },
           { threshold: 0.1 }
-        )
+        );
         
-        observer.observe(terminalRef.current)
+        observer.observe(terminalRef.current);
         
         return () => {
           if (terminalRef.current) {
-            observer.unobserve(terminalRef.current)
+            observer.unobserve(terminalRef.current);
           }
-        }
+        };
       } catch (error) {
         // Fallback se houver erro
-        setIsInView(true)
+        setIsInView(true);
       }
     } else {
       // Fallback se não houver IntersectionObserver
-      setIsInView(true)
+      setIsInView(true);
     }
-  }, [isMobile])
+  }, [isMobile]);
 
   // Função para digitar um par de comando atual
   const typeCurrentCommand = () => {
@@ -190,12 +242,12 @@ Python (Curso em video).py`
     if (isMobile) return;
     
     // Limpar timers existentes
-    timersRef.current.forEach(timer => clearTimeout(timer))
-    timersRef.current = []
+    timersRef.current.forEach(timer => clearTimeout(timer));
+    timersRef.current = [];
     
     // Verificar se existem mais comandos para digitar
     if (currentCommandIndex >= commands.length || !isInView) {
-      return
+      return;
     }
     
     // Obter par atual (comando e resposta)
@@ -209,9 +261,9 @@ Python (Curso em video).py`
     // Função auxiliar para adicionar texto com segurança
     const safeAppendText = (text) => {
       if (isMountedRef.current) {
-        setDisplayText(prev => prev + text)
+        setDisplayText(prev => prev + text);
       }
-    }
+    };
     
     let totalDelay = 0;
     
@@ -222,7 +274,7 @@ Python (Curso em video).py`
     // Digitar o comando caractere por caractere
     for (let i = 0; i < cmd.command.length; i++) {
       const charTimer = setTimeout(() => {
-        safeAppendText(cmd.command[i])
+        safeAppendText(cmd.command[i]);
       }, totalDelay);
       timersRef.current.push(charTimer);
       totalDelay += cmd.delay;
@@ -238,7 +290,7 @@ Python (Curso em video).py`
     // Digitar a resposta caractere por caractere
     for (let i = 0; i < response.command.length; i++) {
       const charTimer = setTimeout(() => {
-        safeAppendText(response.command[i])
+        safeAppendText(response.command[i]);
       }, totalDelay);
       timersRef.current.push(charTimer);
       totalDelay += response.delay;
@@ -262,17 +314,17 @@ Python (Curso em video).py`
   // Função para rolar automaticamente para o final do terminal
   const scrollToBottom = () => {
     if (terminalRef.current) {
-      const content = terminalRef.current.querySelector('.terminal-content')
+      const content = terminalRef.current.querySelector('.terminal-content');
       if (content) {
-        content.scrollTop = content.scrollHeight
+        content.scrollTop = content.scrollHeight;
       }
     }
-  }
+  };
 
   // Rolar para o final cada vez que o texto muda
   useEffect(() => {
-    scrollToBottom()
-  }, [displayText])
+    scrollToBottom();
+  }, [displayText]);
 
   return (
     <section className="py-20">
@@ -305,5 +357,5 @@ Python (Curso em video).py`
         </motion.div>
       </div>
     </section>
-  )
+  );
 }
