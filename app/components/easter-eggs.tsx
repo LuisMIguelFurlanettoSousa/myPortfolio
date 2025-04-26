@@ -2,8 +2,8 @@
 
 import type React from "react"
 
-import { useState, useEffect } from "react"
-import { motion } from "framer-motion"
+import { useState, useEffect, useRef } from "react"
+import { motion, AnimatePresence } from "framer-motion"
 
 export default function EasterEggs() {
   const [showConsole, setShowConsole] = useState(false)
@@ -12,6 +12,14 @@ export default function EasterEggs() {
   const [cursorPosition, setCursorPosition] = useState(0)
   const [showSecret, setShowSecret] = useState(false)
   const [secretType, setSecretType] = useState<"http" | "sql" | "error" | null>(null)
+  const consoleEndRef = useRef<HTMLDivElement>(null)
+
+  // Auto scroll to bottom of console when output changes
+  useEffect(() => {
+    if (consoleEndRef.current) {
+      consoleEndRef.current.scrollIntoView({ behavior: "smooth" })
+    }
+  }, [consoleOutput])
 
   // Konami code easter egg
   useEffect(() => {
@@ -113,14 +121,16 @@ export default function EasterEggs() {
       case "curses":
         output.push(
           "Cursos Concluídos:",
+          " ",
           "- FullStack (Luiz Otávio Miranda)",
           "- Python (Luiz Otávio Miranda)",
           "- Git (Hora de Codar)",
           "- Figma (Udemy)",
           "- HTML e CSS (Curso em Vídeo)",
           "- Python (Curso em Vídeo)",
-          "",
+          " ",
           "Cursos em Andamento:",
+          " ",
           "- Análise e Desenvolvimento de Sistemas (Uniube)",
           "- JavaViradoNoJiraya.java",
         )
@@ -142,118 +152,158 @@ export default function EasterEggs() {
   return (
     <>
       {/* Hidden console (press > to toggle) */}
-      {showConsole && (
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          className="fixed top-0 left-0 right-0 z-50 bg-black bg-opacity-95 border-b border-zinc-700 p-4 font-mono text-sm"
-          style={{ maxHeight: "50vh", overflowY: "auto" }}
-        >
-          <div className="container mx-auto">
-            <div className="mb-2 text-zinc-400">Backend Console v1.0.0 - Press > to hide</div>
+      <AnimatePresence>
+        {showConsole && (
+          <motion.div
+            initial={{ opacity: 0, y: -20, backdropFilter: "blur(0px)" }}
+            animate={{ opacity: 1, y: 0, backdropFilter: "blur(8px)" }}
+            exit={{ opacity: 0, y: -20, backdropFilter: "blur(0px)" }}
+            transition={{ duration: 0.3 }}
+            className="fixed top-0 left-0 right-0 z-50 bg-black bg-opacity-80 border-b border-zinc-700 p-4 font-mono text-sm"
+            style={{ 
+              maxHeight: "50vh", 
+              overflowY: "auto",
+              backdropFilter: "blur(8px)",
+              WebkitBackdropFilter: "blur(8px)"
+            }}
+          >
+            <div className="container mx-auto">
+              <div className="mb-2 text-zinc-400">Backend Console v1.7.0 - Press > to hide
+                <span> 
+                  <p>Available commands: </p>
+                  <br />
+                  <p>- help: Show this help message</p>
+                  <p>- clear: Clear the console</p>
+                  <p>- error: Simulate a server error</p>
+                  <p>- about: About the developer</p>
+                  <p>- curses: Show completed courses</p>
+                  <p>- exit: Close the console</p>
+                </span>
+              </div>
 
-            <div className="mb-4 text-zinc-300">
-              {consoleOutput.map((line, i) => (
-                <div key={i} className="whitespace-pre-wrap">
-                  {line.startsWith("\x1b[31m") ? (
-                    <span className="text-red-500">{line.replace(/\x1b\[\d+m/g, "")}</span>
-                  ) : line.startsWith("\x1b[33m") ? (
-                    <span className="text-yellow-500">{line.replace(/\x1b\[\d+m/g, "")}</span>
-                  ) : line.startsWith("\x1b[34m") ? (
-                    <span className="text-blue-500">{line.replace(/\x1b\[\d+m/g, "")}</span>
-                  ) : (
-                    line
-                  )}
-                </div>
-              ))}
+              <div className="mb-4 text-zinc-300">
+                {consoleOutput.map((line, i) => (
+                  <motion.div 
+                    key={i} 
+                    className="whitespace-pre-wrap"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {line.startsWith("\x1b[31m") ? (
+                      <span className="text-red-500">{line.replace(/\x1b\[\d+m/g, "")}</span>
+                    ) : line.startsWith("\x1b[33m") ? (
+                      <span className="text-yellow-500">{line.replace(/\x1b\[\d+m/g, "")}</span>
+                    ) : line.startsWith("\x1b[34m") ? (
+                      <span className="text-blue-500">{line.replace(/\x1b\[\d+m/g, "")}</span>
+                    ) : (
+                      line
+                    )}
+                  </motion.div>
+                ))}
+                <div ref={consoleEndRef} />
+              </div>
+
+              <form onSubmit={handleCommandSubmit} className="flex items-center">
+                <span className="text-green-500 mr-2">$</span>
+                <input
+                  type="text"
+                  value={command}
+                  onChange={(e) => setCommand(e.target.value)}
+                  className="flex-1 bg-transparent border-none outline-none text-white"
+                  autoFocus
+                />
+              </form>
             </div>
-
-            <form onSubmit={handleCommandSubmit} className="flex items-center">
-              <span className="text-green-500 mr-2">$</span>
-              <input
-                type="text"
-                value={command}
-                onChange={(e) => setCommand(e.target.value)}
-                className="flex-1 bg-transparent border-none outline-none text-white"
-                autoFocus
-              />
-            </form>
-          </div>
-        </motion.div>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Secret HTTP status codes (triggered by Konami code) */}
-      {showSecret && secretType === "http" && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed bottom-4 right-4 z-50 bg-zinc-900 border border-zinc-700 p-4 rounded-lg shadow-lg font-mono"
-        >
-          <div className="text-green-500 font-bold mb-2">HTTP Status Codes Cheat Sheet</div>
-          <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
-            <div>
-              <span className="text-blue-400">200</span> - OK
+      <AnimatePresence>
+        {showSecret && secretType === "http" && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed bottom-4 right-4 z-50 bg-zinc-900 bg-opacity-90 border border-zinc-700 p-4 rounded-lg shadow-lg font-mono"
+            style={{ 
+              backdropFilter: "blur(5px)",
+              WebkitBackdropFilter: "blur(5px)"
+            }}
+          >
+            <div className="text-green-500 font-bold mb-2">HTTP Status Codes Cheat Sheet</div>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
+              <div>
+                <span className="text-blue-400">200</span> - OK
+              </div>
+              <div>
+                <span className="text-blue-400">201</span> - Created
+              </div>
+              <div>
+                <span className="text-blue-400">204</span> - No Content
+              </div>
+              <div>
+                <span className="text-yellow-400">301</span> - Moved Permanently
+              </div>
+              <div>
+                <span className="text-yellow-400">304</span> - Not Modified
+              </div>
+              <div>
+                <span className="text-red-400">400</span> - Bad Request
+              </div>
+              <div>
+                <span className="text-red-400">401</span> - Unauthorized
+              </div>
+              <div>
+                <span className="text-red-400">403</span> - Forbidden
+              </div>
+              <div>
+                <span className="text-red-400">404</span> - Not Found
+              </div>
+              <div>
+                <span className="text-red-400">500</span> - Internal Server Error
+              </div>
             </div>
-            <div>
-              <span className="text-blue-400">201</span> - Created
-            </div>
-            <div>
-              <span className="text-blue-400">204</span> - No Content
-            </div>
-            <div>
-              <span className="text-yellow-400">301</span> - Moved Permanently
-            </div>
-            <div>
-              <span className="text-yellow-400">304</span> - Not Modified
-            </div>
-            <div>
-              <span className="text-red-400">400</span> - Bad Request
-            </div>
-            <div>
-              <span className="text-red-400">401</span> - Unauthorized
-            </div>
-            <div>
-              <span className="text-red-400">403</span> - Forbidden
-            </div>
-            <div>
-              <span className="text-red-400">404</span> - Not Found
-            </div>
-            <div>
-              <span className="text-red-400">500</span> - Internal Server Error
-            </div>
-          </div>
-          <div className="mt-2 text-xs text-zinc-400">Konami code activated!</div>
-        </motion.div>
-      )}
+            <div className="mt-2 text-xs text-zinc-400">Konami code activated!</div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Error stack trace */}
-      {showSecret && secretType === "error" && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 bg-red-900 bg-opacity-90 border border-red-700 p-4 rounded-lg shadow-lg font-mono max-w-md w-full"
-        >
-          <div className="text-white font-bold mb-2 flex items-center">
-            <span className="mr-2">⚠️</span>
-            <span>Uncaught Exception</span>
-          </div>
-          <div className="text-xs text-red-200">
-            <pre className="whitespace-pre-wrap">
-              {`TypeError: Cannot read property 'id' of undefined
+      <AnimatePresence>
+        {showSecret && secretType === "error" && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 bg-red-900 bg-opacity-80 border border-red-700 p-4 rounded-lg shadow-lg font-mono max-w-md w-full"
+            style={{ 
+              backdropFilter: "blur(5px)",
+              WebkitBackdropFilter: "blur(5px)"
+            }}
+          >
+            <div className="text-white font-bold mb-2 flex items-center">
+              <span className="mr-2">⚠️</span>
+              <span>Uncaught Exception</span>
+            </div>
+            <div className="text-xs text-red-200">
+              <pre className="whitespace-pre-wrap">
+                {`TypeError: Cannot read property 'id' of undefined
     at getProjectById (/api/projects:42:23)
     at processRequest (/middleware/auth:217:12)
     at async Router.handleApiRequest (/node_modules/next/server/router.js:28:9)`}
-            </pre>
-          </div>
-          <div className="mt-2 text-xs text-red-300 flex justify-between">
-            <span>Process exited with code 1</span>
-            <button className="text-white hover:text-red-200">Dismiss</button>
-          </div>
-        </motion.div>
-      )}
+              </pre>
+            </div>
+            <div className="mt-2 text-xs text-red-300 flex justify-between">
+              <span>Process exited with code 1</span>
+              <button className="text-white hover:text-red-200">Dismiss</button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Hidden comments in the DOM */}
       {/* <!-- 
