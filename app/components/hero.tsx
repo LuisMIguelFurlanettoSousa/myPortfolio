@@ -169,7 +169,7 @@ export default function Hero() {
           </motion.a>
           
           <motion.a
-            href="mailto:your.email@example.com"
+            href="mailto:lfurlanettosousa@gmail.com"
             className="flex items-center justify-center w-32 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 px-4 py-2 rounded-md font-mono text-sm transition-all"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
