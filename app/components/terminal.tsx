@@ -100,18 +100,17 @@ drwxr-xr-x 10 luis  staff  320 Apr 22 19:48 ..
   ]
 
   // Conteúdo estático para exibir em dispositivos móveis
-  const staticContent = `user@portfolio:~$ ls -la courses/
+  const staticContent = `user@portfolio:~$ cat courses.txt
 total 7
-drwxr-xr-x  2 luis  staff  192 Apr 22 19:48 .
-drwxr-xr-x 10 luis  staff  320 Apr 22 19:48 ..
--rw-r--r--  1 luis  Análise e Desenvolvimento de Sistemas (Uniube)
--rw-r--r--  1 luis  JavaViradoNoJiraya.java
--rw-r--r--  1 luis  FullStack (Luiz Otávio Miranda).ts
--rw-r--r--  1 luis  Python (Luiz Otávio Miranda).py
--rw-r--r--  1 luis  Git (Hora de Codar).git
--rw-r--r--  1 luis  Figma
--rw-r--r--  1 luis  Html e css (Curso em video)
--rw-r--r--  1 luis  Python (Curso em video).py`
+
+Análise e Desenvolvimento de Sistemas (Uniube)
+JavaViradoNoJiraya.java
+FullStack (Luiz Otávio Miranda).ts
+Python (Luiz Otávio Miranda).py
+Git (Hora de Codar).git
+Figma
+Html e css (Curso em video)
+Python (Curso em video).py`
 
   // Detectar dispositivo móvel
   useEffect(() => {
