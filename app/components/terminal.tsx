@@ -104,14 +104,14 @@ drwxr-xr-x 10 luis  staff  320 Apr 22 19:48 ..
 total 7
 drwxr-xr-x  2 luis  staff  192 Apr 22 19:48 .
 drwxr-xr-x 10 luis  staff  320 Apr 22 19:48 ..
--rw-r--r--  1 luis  staff  11.9K Apr 22 19:48 Análise e Desenvolvimento de Sistemas (Uniube)
--rw-r--r--  1 luis  staff  4.2K Apr 22 19:48 JavaViradoNoJiraya.java
--rw-r--r--  1 luis  staff  3.8K Apr 22 19:48 FullStack (Luiz Otávio Miranda).ts
--rw-r--r--  1 luis  staff  4.4K Apr 22 19:48 Python (Luiz Otávio Miranda).py
--rw-r--r--  1 luis  staff  1.4K Apr 22 19:48 Git (Hora de Codar).ts
--rw-r--r--  1 luis  staff  7.8K Apr 22 19:48 Figma
--rw-r--r--  1 luis  staff  2.7K Apr 22 19:48 Html e css (Curso em video)
--rw-r--r--  1 luis  staff  3.9K Apr 22 19:48 Python (Curso em video).py`
+-rw-r--r--  1 luis  Análise e Desenvolvimento de Sistemas (Uniube)
+-rw-r--r--  1 luis  JavaViradoNoJiraya.java
+-rw-r--r--  1 luis  FullStack (Luiz Otávio Miranda).ts
+-rw-r--r--  1 luis  Python (Luiz Otávio Miranda).py
+-rw-r--r--  1 luis  Git (Hora de Codar).ts
+-rw-r--r--  1 luis  Figma
+-rw-r--r--  1 luis  Html e css (Curso em video)
+-rw-r--r--  1 luis  Python (Curso em video).py`
 
   // Detectar dispositivo móvel
   useEffect(() => {
