@@ -18,6 +18,8 @@ export default function Terminal() {
   const isMountedRef = useRef(true)
   // Referência para armazenar timers ativos
   const timersRef = useRef([])
+  // Estado para verificar se é um dispositivo móvel
+  const [isMobile, setIsMobile] = useState(false)
 
   // Lista de comandos e respostas
   const commands = [
@@ -48,33 +50,6 @@ Idiomas:
 `,
       delay: 20,
     },
- //   { prompt: "user@portfolio:~$ ", command: "ls -la skills/", delay: 50 },
-//     {
-//       prompt: "",
-//       command: `
-// total 14
-// drwxr-xr-x  5 luis  staff  160 Apr 22 19:48 .
-// drwxr-xr-x 10 luis  staff  320 Apr 22 19:48 ..
-// drwxr-xr-x  3 luis  staff   96 Apr 22 19:48 languages/
-// -rw-r--r--  1 luis  staff  102 Apr 22 19:48 python.lang
-// -rw-r--r--  1 luis  staff  128 Apr 22 19:48 javascript.lang
-// -rw-r--r--  1 luis  staff   56 Apr 22 19:48 c.lang
-// -rw-r--r--  1 luis  staff   78 Apr 22 19:48 java.lang
-// drwxr-xr-x  4 luis  staff  128 Apr 22 19:48 frameworks/
-// -rw-r--r--  1 luis  staff   96 Apr 22 19:48 nodejs.fw
-// -rw-r--r--  1 luis  staff  112 Apr 22 19:48 express.fw
-// -rw-r--r--  1 luis  staff  104 Apr 22 19:48 react.fw
-// -rw-r--r--  1 luis  staff  95 Apr 22 19:48 next.fw
-// -rw-r--r--  1 luis  staff  109 Apr 22 19:48 tailwind.fw
-// -rw-r--r--  1 luis  staff   88 Apr 22 19:48 bcrypt.fw
-// drwxr-xr-x  5 luis  staff  160 Apr 22 19:48 databases/
-// -rw-r--r--  1 luis  staff  120 Apr 22 19:48 mongodb.db
-// -rw-r--r--  1 luis  staff  112 Apr 22 19:48 mysql.db
-// -rw-r--r--  1 luis  staff  136 Apr 22 19:48 sqlserver.db
-// -rw-r--r--  1 luis  staff  104 Apr 22 19:48 oracle.db
-// `,
-//       delay: 10,
- //   },
     { prompt: "user@portfolio:~$ ", command: "cat objective.txt", delay: 50 },
     {
       prompt: "",
@@ -111,6 +86,7 @@ drwxr-xr-x 10 luis  staff  320 Apr 22 19:48 ..
 total 7
 drwxr-xr-x  2 luis  staff  192 Apr 22 19:48 .
 drwxr-xr-x 10 luis  staff  320 Apr 22 19:48 ..
+-rw-r--r--  1 luis  staff  11.9K Apr 22 19:48 Análise e Desenvolvimento de Sistemas (Uniube)
 -rw-r--r--  1 luis  staff  4.2K Apr 22 19:48 JavaViradoNoJiraya.java
 -rw-r--r--  1 luis  staff  3.8K Apr 22 19:48 FullStack (Luiz Otávio Miranda).ts
 -rw-r--r--  1 luis  staff  4.4K Apr 22 19:48 Python (Luiz Otávio Miranda).py
@@ -122,6 +98,36 @@ drwxr-xr-x 10 luis  staff  320 Apr 22 19:48 ..
       delay: 10,
     },
   ]
+
+  // Conteúdo estático para exibir em dispositivos móveis
+  const staticContent = `user@portfolio:~$ ls -la courses/
+total 7
+drwxr-xr-x  2 luis  staff  192 Apr 22 19:48 .
+drwxr-xr-x 10 luis  staff  320 Apr 22 19:48 ..
+-rw-r--r--  1 luis  staff  11.9K Apr 22 19:48 Análise e Desenvolvimento de Sistemas (Uniube)
+-rw-r--r--  1 luis  staff  4.2K Apr 22 19:48 JavaViradoNoJiraya.java
+-rw-r--r--  1 luis  staff  3.8K Apr 22 19:48 FullStack (Luiz Otávio Miranda).ts
+-rw-r--r--  1 luis  staff  4.4K Apr 22 19:48 Python (Luiz Otávio Miranda).py
+-rw-r--r--  1 luis  staff  1.4K Apr 22 19:48 Git (Hora de Codar).ts
+-rw-r--r--  1 luis  staff  7.8K Apr 22 19:48 Figma
+-rw-r--r--  1 luis  staff  2.7K Apr 22 19:48 Html e css (Curso em video)
+-rw-r--r--  1 luis  staff  3.9K Apr 22 19:48 Python (Curso em video).py`
+
+  // Detectar dispositivo móvel
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const checkMobile = () => {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+      }
+      
+      setIsMobile(checkMobile())
+      
+      // Se for móvel, definir o conteúdo estático imediatamente
+      if (checkMobile()) {
+        setDisplayText(staticContent)
+      }
+    }
+  }, [])
 
   // Limpar todos os timers quando o componente for desmontado
   useEffect(() => {
@@ -143,15 +149,14 @@ drwxr-xr-x 10 luis  staff  320 Apr 22 19:48 ..
     return () => clearInterval(cursorInterval)
   }, [])
 
-  // Verificar se o terminal está na viewport
+  // Verificar se o terminal está na viewport (apenas para desktop)
   useEffect(() => {
-    // Em dispositivos móveis, simplesmente inicie a animação
-    if (typeof window !== "undefined" && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-      setIsInView(true)
+    // Pular se for dispositivo móvel
+    if (isMobile) {
       return
     }
     
-    // Em outros dispositivos, use IntersectionObserver se disponível
+    // Em desktop, use IntersectionObserver se disponível
     if (typeof window !== "undefined" && typeof IntersectionObserver !== "undefined" && terminalRef.current) {
       try {
         const observer = new IntersectionObserver(
@@ -178,10 +183,13 @@ drwxr-xr-x 10 luis  staff  320 Apr 22 19:48 ..
       // Fallback se não houver IntersectionObserver
       setIsInView(true)
     }
-  }, [])
+  }, [isMobile])
 
   // Função para digitar um par de comando atual
   const typeCurrentCommand = () => {
+    // Pular em dispositivos móveis
+    if (isMobile) return;
+    
     // Limpar timers existentes
     timersRef.current.forEach(timer => clearTimeout(timer))
     timersRef.current = []
@@ -248,9 +256,9 @@ drwxr-xr-x 10 luis  staff  320 Apr 22 19:48 ..
   
   // Efeito para digitar comandos quando o índice atual ou visibilidade mudar
   useEffect(() => {
-    if (!isInView) return;
+    if (!isInView || isMobile) return;
     typeCurrentCommand();
-  }, [currentCommandIndex, isInView]);
+  }, [currentCommandIndex, isInView, isMobile]);
 
   // Função para rolar automaticamente para o final do terminal
   const scrollToBottom = () => {
