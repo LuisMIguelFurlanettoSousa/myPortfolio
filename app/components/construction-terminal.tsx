@@ -10,6 +10,16 @@ export default function ConstructionTerminal() {
   const [currentCommand, setCurrentCommand] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
   const terminalRef = useRef(null)
+  // Estado para verificar se é um dispositivo móvel
+  const [isMobile, setIsMobile] = useState(false)
+
+  // Conteúdo estático para exibir em dispositivos móveis
+  const staticContent = `visitor@portfolio:~$ check-status
+Status: UNDER CONSTRUCTION
+ETA: Coming soon...
+This portfolio is currently under development.
+New features and projects will be added shortly.
+Please check back later or contact me for more information.`
 
   const commands = [
     { prompt: "visitor@portfolio:~$ ", command: "load-more-features", delay: 80 },
@@ -54,8 +64,80 @@ Please check back later or contact me for more information.`,
     },
   ]
 
+  // Função melhorada para detectar dispositivos móveis (incluindo Xiaomi)
+  const checkIfMobile = () => {
+    if (typeof window === "undefined") return false;
+    
+    // Detecção por UserAgent (abordagem tradicional)
+    const userAgentCheck = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|MI\s|Redmi|MIUI|XIAOMI/i.test(
+      navigator.userAgent
+    );
+    
+    // Detecção por tamanho de tela (abordagem alternativa)
+    const screenCheck = window.innerWidth <= 768;
+    
+    // Detecção por recursos de toque (outra abordagem alternativa)
+    const touchCheck = 'ontouchstart' in window || 
+                     navigator.maxTouchPoints > 0 ||
+                     (navigator.msMaxTouchPoints && navigator.msMaxTouchPoints > 0);
+    
+    // Para dispositivos Xiaomi específicos, verificação adicional
+    const isXiaomiCheck = /MI\s|Redmi|MIUI|XIAOMI/i.test(navigator.userAgent) || 
+                         /HM\sNote/i.test(navigator.userAgent) ||
+                         /Mi\sNote/i.test(navigator.userAgent);
+    
+    // Retorna true se qualquer uma das verificações for positiva
+    return userAgentCheck || (screenCheck && touchCheck) || isXiaomiCheck;
+  };
+
+  // Detectar dispositivo móvel
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      // Verificação imediata na montagem
+      const isMobileDevice = checkIfMobile();
+      setIsMobile(isMobileDevice);
+      
+      // Se for móvel, definir o conteúdo estático imediatamente
+      if (isMobileDevice) {
+        setTypedText(staticContent);
+      }
+      
+      // Adicionar listener de redimensionamento para ajustar se necessário
+      const handleResize = () => {
+        const newIsMobile = checkIfMobile();
+        if (newIsMobile !== isMobile) {
+          setIsMobile(newIsMobile);
+          if (newIsMobile) {
+            setTypedText(staticContent);
+          }
+        }
+      };
+      
+      window.addEventListener('resize', handleResize);
+      
+      // Verificação de força bruta para garantir que funcione em dispositivos Xiaomi
+      const forceCheckTimeout = setTimeout(() => {
+        const forcedCheck = checkIfMobile();
+        if (forcedCheck && !isMobile) {
+          setIsMobile(true);
+          setTypedText(staticContent);
+        }
+      }, 500);
+      
+      return () => {
+        window.removeEventListener('resize', handleResize);
+        clearTimeout(forceCheckTimeout);
+      };
+    }
+  }, []);
+
   // Detect when terminal is in viewport
   useEffect(() => {
+    // Pular se for dispositivo móvel
+    if (isMobile) {
+      return;
+    }
+    
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
@@ -74,7 +156,7 @@ Please check back later or contact me for more information.`,
         observer.unobserve(terminalRef.current)
       }
     }
-  }, [])
+  }, [isMobile])
 
   // Cursor blinking effect
   useEffect(() => {
@@ -85,9 +167,9 @@ Please check back later or contact me for more information.`,
     return () => clearInterval(cursorInterval)
   }, [])
 
-  // Type out commands when terminal is visible
+  // Type out commands when terminal is visible and not mobile
   useEffect(() => {
-    if (!isVisible || currentCommand >= commands.length) return
+    if (!isVisible || isMobile || currentCommand >= commands.length) return
 
     const command = commands[currentCommand]
     let currentIndex = 0
@@ -113,9 +195,9 @@ Please check back later or contact me for more information.`,
     setTimeout(typeNextChar, 100)
 
     return () => {
-      // No need for clearInterval as we're using setTimeout
+      // Cleanup is handled by other useEffects
     }
-  }, [currentCommand, isVisible])
+  }, [currentCommand, isVisible, isMobile])
 
   return (
     <section className="py-20 bg-black border-t border-zinc-800" ref={terminalRef}>
@@ -149,7 +231,7 @@ Please check back later or contact me for more information.`,
             <div className="bg-zinc-900 p-4 font-mono text-sm h-[300px] overflow-y-auto">
               <pre className="whitespace-pre-wrap text-zinc-300">
                 {typedText}
-                {showCursor && currentCommand < commands.length && <span className="text-white">▋</span>}
+                {showCursor && (isMobile || currentCommand < commands.length) && <span className="text-white">▋</span>}
               </pre>
             </div>
           </div>
