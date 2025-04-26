@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import { motion } from "framer-motion"
-import { ChevronDown, Github, Linkedin, Mail, Phone } from "lucide-react"
+import { ChevronDown, Github, Linkedin, Mail, Phone, FileDown } from "lucide-react"
 import { Link as ScrollLink } from "react-scroll"
 
 export default function Hero() {
@@ -97,6 +97,22 @@ export default function Hero() {
     })
   }
 
+  // Função para fazer o download do currículo
+  const handleResumeDownload = () => {
+    // Caminho para o seu arquivo de currículo PDF
+    const resumeUrl = "/curriculo-luis-miguel.pdf"
+    
+    // Cria um elemento <a> invisível
+    const link = document.createElement("a")
+    link.href = resumeUrl
+    link.download = "curriculo-luis-miguel.pdf"
+    document.body.appendChild(link)
+    
+    // Dispara o clique no link e depois remove o elemento
+    link.click()
+    document.body.removeChild(link)
+  }
+
   return (
     <div className="relative h-screen w-full overflow-hidden">
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full bg-black" />
@@ -131,6 +147,17 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
+          {/* Botão de Download do Currículo */}
+          <motion.button
+            onClick={handleResumeDownload}
+            className="flex items-center justify-center w-32 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 px-4 py-2 rounded-md font-mono text-sm transition-all"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <FileDown className="h-4 w-4 text-white mr-2" />
+            <span className="text-purple-500">Currículo</span>
+          </motion.button>
+          
           <motion.a
             href="https://github.com/LuisMIguelFurlanettoSousa"
             target="_blank"
