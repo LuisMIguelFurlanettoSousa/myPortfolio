@@ -105,7 +105,7 @@ export default function Hero() {
     // Cria um elemento <a> invisível
     const link = document.createElement("a")
     link.href = resumeUrl
-    link.download = "curriculo-luis-miguel.pdf"
+    link.download = "/curriculo-luis-miguel.pdf"
     document.body.appendChild(link)
     
     // Dispara o clique no link e depois remove o elemento
