@@ -48,33 +48,33 @@ Idiomas:
 `,
       delay: 20,
     },
-    { prompt: "user@portfolio:~$ ", command: "ls -la skills/", delay: 50 },
-    {
-      prompt: "",
-      command: `
-total 14
-drwxr-xr-x  5 luis  staff  160 Apr 22 19:48 .
-drwxr-xr-x 10 luis  staff  320 Apr 22 19:48 ..
-drwxr-xr-x  3 luis  staff   96 Apr 22 19:48 languages/
--rw-r--r--  1 luis  staff  102 Apr 22 19:48 python.lang
--rw-r--r--  1 luis  staff  128 Apr 22 19:48 javascript.lang
--rw-r--r--  1 luis  staff   56 Apr 22 19:48 c.lang
--rw-r--r--  1 luis  staff   78 Apr 22 19:48 java.lang
-drwxr-xr-x  4 luis  staff  128 Apr 22 19:48 frameworks/
--rw-r--r--  1 luis  staff   96 Apr 22 19:48 nodejs.fw
--rw-r--r--  1 luis  staff  112 Apr 22 19:48 express.fw
--rw-r--r--  1 luis  staff  104 Apr 22 19:48 react.fw
--rw-r--r--  1 luis  staff  95 Apr 22 19:48 next.fw
--rw-r--r--  1 luis  staff  109 Apr 22 19:48 tailwind.fw
--rw-r--r--  1 luis  staff   88 Apr 22 19:48 bcrypt.fw
-drwxr-xr-x  5 luis  staff  160 Apr 22 19:48 databases/
--rw-r--r--  1 luis  staff  120 Apr 22 19:48 mongodb.db
--rw-r--r--  1 luis  staff  112 Apr 22 19:48 mysql.db
--rw-r--r--  1 luis  staff  136 Apr 22 19:48 sqlserver.db
--rw-r--r--  1 luis  staff  104 Apr 22 19:48 oracle.db
-`,
-      delay: 10,
-    },
+ //   { prompt: "user@portfolio:~$ ", command: "ls -la skills/", delay: 50 },
+//     {
+//       prompt: "",
+//       command: `
+// total 14
+// drwxr-xr-x  5 luis  staff  160 Apr 22 19:48 .
+// drwxr-xr-x 10 luis  staff  320 Apr 22 19:48 ..
+// drwxr-xr-x  3 luis  staff   96 Apr 22 19:48 languages/
+// -rw-r--r--  1 luis  staff  102 Apr 22 19:48 python.lang
+// -rw-r--r--  1 luis  staff  128 Apr 22 19:48 javascript.lang
+// -rw-r--r--  1 luis  staff   56 Apr 22 19:48 c.lang
+// -rw-r--r--  1 luis  staff   78 Apr 22 19:48 java.lang
+// drwxr-xr-x  4 luis  staff  128 Apr 22 19:48 frameworks/
+// -rw-r--r--  1 luis  staff   96 Apr 22 19:48 nodejs.fw
+// -rw-r--r--  1 luis  staff  112 Apr 22 19:48 express.fw
+// -rw-r--r--  1 luis  staff  104 Apr 22 19:48 react.fw
+// -rw-r--r--  1 luis  staff  95 Apr 22 19:48 next.fw
+// -rw-r--r--  1 luis  staff  109 Apr 22 19:48 tailwind.fw
+// -rw-r--r--  1 luis  staff   88 Apr 22 19:48 bcrypt.fw
+// drwxr-xr-x  5 luis  staff  160 Apr 22 19:48 databases/
+// -rw-r--r--  1 luis  staff  120 Apr 22 19:48 mongodb.db
+// -rw-r--r--  1 luis  staff  112 Apr 22 19:48 mysql.db
+// -rw-r--r--  1 luis  staff  136 Apr 22 19:48 sqlserver.db
+// -rw-r--r--  1 luis  staff  104 Apr 22 19:48 oracle.db
+// `,
+//       delay: 10,
+ //   },
     { prompt: "user@portfolio:~$ ", command: "cat objective.txt", delay: 50 },
     {
       prompt: "",
