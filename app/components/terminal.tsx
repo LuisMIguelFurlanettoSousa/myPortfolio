@@ -101,7 +101,6 @@ drwxr-xr-x 10 luis  staff  320 Apr 22 19:48 ..
 
   // Conteúdo estático para exibir em dispositivos móveis
   const staticContent = `user@portfolio:~$ cat courses.txt
-total 8
 
 Análise e Desenvolvimento de Sistemas (Uniube)
 JavaViradoNoJiraya.java
