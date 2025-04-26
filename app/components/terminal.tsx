@@ -108,7 +108,7 @@ drwxr-xr-x 10 luis  staff  320 Apr 22 19:48 ..
 -rw-r--r--  1 luis  JavaViradoNoJiraya.java
 -rw-r--r--  1 luis  FullStack (Luiz Otávio Miranda).ts
 -rw-r--r--  1 luis  Python (Luiz Otávio Miranda).py
--rw-r--r--  1 luis  Git (Hora de Codar).ts
+-rw-r--r--  1 luis  Git (Hora de Codar).git
 -rw-r--r--  1 luis  Figma
 -rw-r--r--  1 luis  Html e css (Curso em video)
 -rw-r--r--  1 luis  Python (Curso em video).py`
