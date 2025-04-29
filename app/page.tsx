@@ -11,9 +11,9 @@ export default function Page() {
   return (
     <main className="min-h-screen bg-black text-white">
       <Hero />
-      <Terminal />
-      <TechStack />
       <Portfolio />
+      <TechStack />
+      <Terminal />
       <Contact />
       <ConstructionTerminal />
       <EasterEggs />

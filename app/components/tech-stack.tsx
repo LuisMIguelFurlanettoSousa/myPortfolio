@@ -7,7 +7,6 @@ type Skill = {
   name: string
   category: string
   icon: string
-  description: string
 }
 
 export default function TechStack() {
@@ -25,31 +24,26 @@ export default function TechStack() {
         name: "Java",
         category: "language",
         icon: "Java",
-        description: "Studying",
       },
       {
         name: "TypeScript",
         category: "language",
         icon: "TS",
-        description: "Used in 2 projects",
       },
       {
         name: "Python",
         category: "language",
         icon: "PY",
-        description: "Used in 3 projects",
       },
     {
       name: "JavaScript",
       category: "language",
       icon: "JS",
-      description: "Used in 2 projects",
     },
     {
       name: "C",
       category: "language",
       icon: "C",
-      description: "Used in 1 projects",
     },
 
     // Frameworks
@@ -57,37 +51,31 @@ export default function TechStack() {
       name: "React",
       category: "framework",
       icon: "REACT",
-      description: "1 year experience",
     },
     {
       name: "Next",
       category: "framework",
       icon: "NEXT",
-      description: "1 year experience",
     },
     {
       name: "Node.js",
       category: "framework",
       icon: "NODE",
-      description: "1 year experience",
     },
     {
       name: "Express.js",
       category: "framework",
       icon: "EXP",
-      description: "1 year experience",
     },
     {
       name: "Tailwind",
       category: "framework",
       icon: "TW",
-      description: "0.5 year experience",
     },
     {
       name: "bcrypt",
       category: "framework",
       icon: "BCR",
-      description: "1 year experience",
     },
 
     // Databases
@@ -95,25 +83,21 @@ export default function TechStack() {
       name: "SQL Server",
       category: "database",
       icon: "MSSQL",
-      description: "950 queries written",
     },
     {
       name: "Oracle",
       category: "database",
       icon: "ORA",
-      description: "500 queries written",
     },
     {
       name: "MongoDB",
       category: "database",
       icon: "MONGO",
-      description: "850 queries written",
     },
     {
       name: "MySQL",
       category: "database",
       icon: "SQL",
-      description: "1200 queries written",
     },
 
     // Tools
@@ -121,19 +105,16 @@ export default function TechStack() {
       name: "Git",
       category: "tool",
       icon: "GIT",
-      description: "Daily workflow integration",
     },
     {
       name: "GitHub",
       category: "tool",
       icon: "GH",
-      description: "Daily workflow integration",
     },
     {
       name: "Figma",
       category: "tool",
       icon: "FI",
-      description: "project planning",
     },
 
     // Methodologies
@@ -141,32 +122,27 @@ export default function TechStack() {
       name: "Scrum",
       category: "methodology",
       icon: "SCR",
-      description: "Daily workflow integration",
     },
     {
       name: "Kanban",
       category: "methodology",
       icon: "KAN",
-      description: "Daily workflow integration",
     },
     //Test
     {
       name: "TDD",
       category: "test",
       icon: "TDD",
-      description: "Applied in team projects",
     },
     {
       name: "BDD",
       category: "test",
       icon: "BDD",
-      description: "Applied in team projects",
     },
     {
       name: "DDD",
       category: "test",
       icon: "DDD",
-      description: "Applied in team projects",
     },
   ]
 
@@ -230,7 +206,6 @@ export default function TechStack() {
                     <div className="flex-1">
                       <div className="flex justify-between items-center">
                         <h3 className="font-mono text-white">{skill.name}</h3>
-                        <span className="text-xs font-mono text-zinc-400">{skill.description}</span>
                       </div>
                     </div>
                   </div>
