@@ -97,7 +97,7 @@ export default function WorkExperience() {
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
             >
-              <span className="text-green-500">2022</span> —{' '}
+              <span className="text-green-500">2020</span> —{' '}
               <span className="text-purple-500">2025</span>
             </motion.div>
           </div>
