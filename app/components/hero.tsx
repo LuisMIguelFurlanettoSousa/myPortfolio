@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react"
 import { motion } from "framer-motion"
 import { ChevronDown, Github, Linkedin, Mail, Phone, FileDown } from "lucide-react"
-import { Link as ScrollLink } from "react-scroll"
 
 export default function Hero() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -126,7 +125,7 @@ export default function Hero() {
       >
         {/* Binário aparece só no hover em telas sm+ */}
         <div className="hidden sm:block absolute -top-10 left-1/2 -translate-x-1/2 whitespace-nowrap opacity-0 group-hover:opacity-40 transition-opacity text-sm font-mono bg-black bg-opacity-50 px-2 py-1 rounded">
-          01001100 01110101 01101001 01110011
+          01001100 01010101 01001001 01010011 00100000 01001101 01001001 01000111 01010101 01000101 01001100 
         </div>
         <h1 className="text-6xl font-bold tracking-tighter sm:text-7xl lg:text-8xl">LUÍS MIGUEL</h1>
       </motion.div>
