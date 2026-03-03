@@ -54,12 +54,12 @@ Idiomas:
     {
       prompt: '',
       command: `
-Busco posição como Desenvolvedor Back-end ou Full-stack para aplicar conhecimentos em Node.js,
-Python e bancos de dados, criando aplicações escaláveis e seguras. Experiência com SQL Server, MySQL,
-NoSQL, APIs REST e WebSockets. No front-end, utilizo JavaScript, React e TailwindCSS para interfaces
-responsivas. Possuo projetos no GitHub que demonstram minha capacidade de desenvolver soluções
-eficientes. Estou sempre em busca de aprimorar habilidades e aprender novas tecnologias para agregar
-valor às equipes e projetos.
+Desenvolvedor de Software com experiência em Java no backend, React e React Native no frontend.
+Atuo no desenvolvimento de funcionalidades com foco em performance, usabilidade e qualidade,
+aplicando refatoração, TDD e otimização contínua para garantir código escalável e de fácil
+manutenção. Vivência em APIs RESTful, automação de processos com Camunda BPM, Docker e
+práticas de CI/CD. Conhecimento em banco de dados, sempre aplicando boas práticas de arquitetura
+para entregar sistemas seguros e de alto desempenho.
 `,
       delay: 15,
     },

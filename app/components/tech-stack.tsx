@@ -30,21 +30,6 @@ export default function TechStack() {
       category: 'language',
       icon: 'TS',
     },
-    {
-      name: 'Python',
-      category: 'language',
-      icon: 'PY',
-    },
-    {
-      name: 'JavaScript',
-      category: 'language',
-      icon: 'JS',
-    },
-    {
-      name: 'C',
-      category: 'language',
-      icon: 'C',
-    },
 
     // Frameworks
     {
@@ -53,9 +38,14 @@ export default function TechStack() {
       icon: 'REACT',
     },
     {
-      name: 'Next',
+      name: 'React Native',
       category: 'framework',
-      icon: 'NEXT',
+      icon: 'RN',
+    },
+    {
+      name: 'Expo',
+      category: 'framework',
+      icon: 'EXPO',
     },
     {
       name: 'Node.js',
@@ -63,31 +53,21 @@ export default function TechStack() {
       icon: 'NODE',
     },
     {
-      name: 'Express.js',
-      category: 'framework',
-      icon: 'EXP',
-    },
-    {
       name: 'Tailwind',
       category: 'framework',
       icon: 'TW',
     },
     {
-      name: 'bcrypt',
+      name: 'Next',
       category: 'framework',
-      icon: 'BCR',
+      icon: 'NEXT',
     },
 
     // Databases
     {
-      name: 'SQL Server',
+      name: 'DynamoDB',
       category: 'database',
-      icon: 'MSSQL',
-    },
-    {
-      name: 'Oracle',
-      category: 'database',
-      icon: 'ORA',
+      icon: 'DDB',
     },
     {
       name: 'MongoDB',
@@ -99,22 +79,15 @@ export default function TechStack() {
       category: 'database',
       icon: 'SQL',
     },
-
-    // Tools
     {
-      name: 'Git',
-      category: 'tool',
-      icon: 'GIT',
+      name: 'SQL Server',
+      category: 'database',
+      icon: 'MSSQL',
     },
     {
-      name: 'GitHub',
-      category: 'tool',
-      icon: 'GH',
-    },
-    {
-      name: 'Figma',
-      category: 'tool',
-      icon: 'FI',
+      name: 'Oracle',
+      category: 'database',
+      icon: 'ORA',
     },
 
     // Methodologies
@@ -128,16 +101,10 @@ export default function TechStack() {
       category: 'methodology',
       icon: 'KAN',
     },
-    //Test
     {
       name: 'TDD',
-      category: 'test',
+      category: 'methodology',
       icon: 'TDD',
-    },
-    {
-      name: 'Jest',
-      category: 'test',
-      icon: 'JEST',
     },
   ]
 
@@ -145,9 +112,7 @@ export default function TechStack() {
     { id: 'language', name: 'Languages' },
     { id: 'framework', name: 'Frameworks' },
     { id: 'database', name: 'Databases' },
-    { id: 'tool', name: 'Tools' },
     { id: 'methodology', name: 'Methodologies' },
-    { id: 'test', name: 'Test' },
     { id: 'all', name: 'All' },
   ]
 
@@ -218,7 +183,7 @@ export default function TechStack() {
           </div>
 
           <div className="mt-8 text-center font-mono text-xs text-zinc-500">
-            <code>/* Skills last updated: 04-25-2025 */</code>
+            <code>/* Skills last updated: 03-02-2026 */</code>
           </div>
         </motion.div>
       </div>
