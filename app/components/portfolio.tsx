@@ -48,140 +48,134 @@ export default function Portfolio() {
     Record<string, boolean>
   >({})
 
-  const categories = ['all', 'backend', 'frontend', 'fullstack']
+  const categories = ['all', 'automation', 'backend', 'frontend']
 
   const works: Project[] = [
     {
       id: 1,
-      title: 'FirstApi',
-      category: 'backend',
-      year: '2023',
-      description: 'API de autenticação com JWT, bcrypt e MongoDB',
-      longDescription: `Este projeto implementa um sistema completo de autenticação de usuários com recursos de segurança modernos.
-      
+      title: 'Auto Apply Bot',
+      category: 'automation',
+      year: '2026',
+      description:
+        'Agente de IA que automatiza candidaturas a vagas usando Gemini + Playwright',
+      longDescription: `Agente inteligente que navega por portais de emprego (Gupy, LinkedIn, Indeed), analisa vagas, pontua compatibilidade e preenche formulários automaticamente usando Google Gemini + browser automation com Playwright MCP.
+
 Características principais:
-- Registro e login de usuários
-- Autenticação baseada em tokens JWT
-- Senhas criptografadas com Bcrypt
-- Proteção contra ataques de força bruta
-- Renovação automática de tokens
-- Rotas protegidas por middleware de autenticação`,
-      tags: ['Node.js', 'Express', 'JWT', 'Bcrypt', 'MongoDB'],
-      repository: 'https://github.com/LuisMIguelFurlanettoSousa/FirstApi',
-      status: '🟡 GitHub',
-      endpoints: [
-        {
-          method: 'POST',
-          route: '/register',
-          description: 'Registra um novo usuário',
-        },
-        {
-          method: 'POST',
-          route: '/login',
-          description: 'Autentica um usuário e retorna um token JWT',
-        },
-        {
-          method: 'GET',
-          route: '/Private',
-          description: ' Acessível apenas para usuários autenticados',
-        },
-      ],
+- AI Agent com Gemini para entender vagas e preencher formulários
+- Currículo e cover letter personalizados por vaga via IA
+- Smart scoring (1-10) com filtro de compatibilidade
+- Cache de respostas em SQLite para economia de tokens
+- Multi-LLM (Gemini, Ollama, OpenAI)
+- Notificações via Telegram e web dashboard`,
+      tags: ['TypeScript', 'Google Gemini', 'Playwright', 'SQLite', 'Node.js'],
+      repository:
+        'https://github.com/LuisMIguelFurlanettoSousa/auto-apply-bot',
+      status: '🟣 development',
     },
     {
       id: 2,
-      title: 'TripleWinSlots',
-      category: 'fullstack',
-      year: '2023',
+      title: 'WhatsApp Notion Sync',
+      category: 'automation',
+      year: '2026',
       description:
-        'Jogo de caça-níquel interativo com animações de rolos girando e verificação de vitórias',
-      longDescription: `Um jogo de caça-níquel desenvolvido com interface gráfica interativa e sistema de apostas.
-      
+        'Automação que captura mensagens do WhatsApp e organiza no Notion e Google Calendar com IA',
+      longDescription: `Automação inteligente que captura mensagens de grupos do WhatsApp e organiza automaticamente no Notion (classificadas por tema via Gemini AI) e cria lembretes no Google Calendar. Inclui transcrição de áudio e deploy containerizado.
+
 Características principais:
-- Interface gráfica com animações de rolos girando
-- Sistema de apostas e cálculo de ganhos
-- Diferentes combinações de símbolos e prêmios
-- Sistema de persistência de saldo do jogador
-- Estatísticas de jogadas e ganhos`,
-      tags: ['JavaScript', 'Next', 'React', 'Python', 'Tailwind'],
-      repository: 'https://github.com/LuisMIguelFurlanettoSousa/slot-machine',
+- Captura automática de texto e áudio de grupos WhatsApp
+- Transcrição de áudio e classificação inteligente por tema via Gemini AI
+- Detecção de lembretes e criação de eventos no Google Calendar
+- Organização em Notion Database com filtros por tema e prioridade
+- Deploy containerizado com Docker Compose`,
+      tags: [
+        'Node.js',
+        'Google Gemini',
+        'Notion API',
+        'Google Calendar',
+        'Docker',
+      ],
       status: '🟡 GitHub',
     },
     {
       id: 3,
-      title: 'Beecrowd',
-      category: 'backend',
-      year: '2024',
-      description: 'Resolução de exercicios de maratona de programação',
-      longDescription: `Como parte da minha preparação para maratonas de programação e para fortalecer minha lógica de programação, resolvi diversos exercícios da plataforma Beecrowd utilizando Python. O projeto reúne soluções para problemas de diferentes níveis de dificuldade, com foco em algoritmos, estruturas de dados e eficiência na resolução.
+      title: 'LinkedIn Auto Poster',
+      category: 'automation',
+      year: '2026',
+      description:
+        'Bot que pesquisa tendências com Gemini AI e publica posts otimizados no LinkedIn',
+      longDescription: `Bot inteligente que pesquisa tópicos em alta com Gemini AI + Google Search, gera posts otimizados para o algoritmo do LinkedIn e publica via Telegram ou WhatsApp com aprovação humana no loop.
 
 Características principais:
--Prática constante de lógica de programação
--Soluções para problemas de diferentes níveis de dificuldade
--Uso de algoritmos clássicos e estruturas de dados
--Código limpo, bem comentado e organizado por categoria
--Foco em desempenho e clareza na resolução dos problemas`,
-      tags: ['Python'],
-      repository: 'https://github.com/LuisMIguelFurlanettoSousa/Beecrowd',
+- Pesquisa de tendências com Gemini + Google Search (últimas 48h)
+- Geração de posts otimizada com 10 regras de conteúdo para LinkedIn
+- Dois canais de controle: Telegram (polling async) e WhatsApp (webhooks via Evolution API)
+- Aprovação humana obrigatória antes de publicar
+- Agendamento via GitHub Actions ou cron (Ter/Qui 7h30)`,
+      tags: [
+        'Python',
+        'Google Gemini',
+        'LinkedIn API',
+        'Telegram',
+        'Flask',
+      ],
       status: '🟡 GitHub',
     },
     {
       id: 4,
-      title: 'NepsAcademy',
-      category: 'backend',
-      year: '2023',
+      title: 'Tech Newsletter',
+      category: 'automation',
+      year: '2026',
       description:
-        'Resoluções de exercícios da Neps Academy em Python, com foco em lógica, algoritmos e boas práticas',
-      longDescription: `Como parte do meu aprendizado contínuo em programação e desenvolvimento de algoritmos, resolvi diversos exercícios da plataforma Neps Academy utilizando Python. Este projeto tem como objetivo consolidar meus conhecimentos em lógica, estruturas de dados e resolução eficiente de problemas, servindo também como um repositório de consulta e evolução pessoal.
+        'Newsletter diária automatizada com curadoria de 20 fontes RSS via Gemini AI',
+      longDescription: `Newsletter diária automatizada que coleta artigos de 20 sites de tech (BR + internacional) via RSS, filtra e resume com Gemini AI, e envia email HTML responsivo com dark mode.
 
 Características principais:
-
--Prática contínua de lógica de programação e algoritmos
--Exercícios organizados por tema e nível de dificuldade
--Implementações com foco em clareza, eficiência e boas práticas
--Utilização de estruturas de dados e técnicas de resolução de problemas
--Código limpo, comentado e de fácil compreensão para revisão e aprendizado`,
-      tags: ['Python'],
-      repository: 'https://github.com/LuisMIguelFurlanettoSousa/NepsAcademy',
+- Curadoria inteligente de 20 fontes RSS com Gemini 2.5 Flash
+- Tradução automática EN → PT-BR preservando termos técnicos
+- 10 categorias com emojis e seção "Por que importa"
+- Deduplicação com cache persistente (7 dias)
+- Deploy zero-infra via GitHub Actions (cron diário 05:30 BRT)`,
+      tags: ['Python', 'Google Gemini', 'Jinja2', 'GitHub Actions', 'RSS'],
       status: '🟡 GitHub',
     },
     {
       id: 5,
-      title: 'Gerador de Senhas',
+      title: 'Telegram Media Downloader',
       category: 'backend',
-      year: '2023',
-      description: 'Gerador de senhas seguro em C com menu interativo.',
-      longDescription: `Como parte da minha prática com a linguagem C e com o objetivo de consolidar conhecimentos sobre vetores, strings, funções e estruturas básicas, desenvolvi um gerador e gerenciador de senhas via terminal. O projeto permite a criação de senhas seguras com base em critérios definidos pelo usuário, sendo ideal para o estudo de manipulação de dados, entrada/saída e lógica de programação em C.
+      year: '2026',
+      description:
+        'CLI para baixar mídias de grupos e canais do Telegram via API oficial MTProto',
+      longDescription: `Script CLI leve e interativo que usa a API oficial do Telegram (MTProto) para listar grupos/canais e baixar mídias (vídeos, fotos, documentos) com barra de progresso e retomada de downloads.
 
 Características principais:
-
--Geração de senhas personalizadas com diferentes critérios de complexidade
--Armazenamento de até 5 senhas com nomes personalizados
--Menu interativo no terminal com funcionalidades simples e intuitivas
--Manipulação de strings, vetores e estruturas básicas em C
--Código comentado, funcional e voltado para prática de fundamentos da linguagem`,
-      tags: ['C'],
+- Autenticação via API oficial MTProto (sem bots)
+- Filtragem por tipo: vídeos, fotos, documentos ou tudo
+- Barra de progresso em tempo real com tamanho estimado
+- Retomada automática de downloads interrompidos
+- Instalação automatizada via script run.sh`,
+      tags: ['Python', 'Telethon', 'MTProto', 'CLI'],
       repository:
-        'https://github.com/LuisMIguelFurlanettoSousa/GeradorDeSenhas.git',
+        'https://github.com/LuisMIguelFurlanettoSousa/telegram-media-downloader',
       status: '🟡 GitHub',
     },
     {
       id: 6,
       title: 'myPortfolio',
       category: 'frontend',
-      year: '2024',
+      year: '2025',
       description:
-        'Portfolio pessoal com design terminal-style, animações e easter eggs interativos',
-      longDescription: `Este é o próprio site que você está navegando agora! Um portfolio pessoal desenvolvido com Next.js e React, apresentando um design inspirado em terminais de comando e interfaces de programação.
-      
+        'Portfólio pessoal com design terminal-style, animações e easter eggs interativos',
+      longDescription: `Este é o próprio site que você está navegando agora! Um portfólio pessoal desenvolvido com Next.js 15 e React 19, apresentando um design inspirado em terminais de comando e editores de código.
+
 Características principais:
 - Design inspirado em terminais e IDEs de programação
 - Animações suaves e interativas usando Framer Motion
 - Terminal funcional com comandos personalizados
 - Visualização de projetos em formato JSON
-- Easter eggs escondidos e recursos interativos
-- Seção de tecnologias com categorização
-- Design totalmente responsivo
-- Formulário de contato estilizado como editor de código`,
+- Easter eggs escondidos (Konami Code, console backend)
+- Formulário de contato estilizado como editor de código com validação Zod
+- Headers de segurança (CSP, honeypot, sanitização)
+- Design totalmente responsivo`,
       tags: [
         'Next.js',
         'React',
@@ -191,7 +185,7 @@ Características principais:
         'Shadcn/UI',
       ],
       repository:
-        'https://github.com/LuisMIguelFurlanettoSousa/myPortfolio/tree/master',
+        'https://github.com/LuisMIguelFurlanettoSousa/myPortfolio',
       status: '🟢 online',
     },
   ]
