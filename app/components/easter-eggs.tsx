@@ -168,7 +168,7 @@ export default function EasterEggs() {
             }}
           >
             <div className="container mx-auto">
-              <div className="mb-2 text-zinc-400">Backend Console v1.7.0 - Press > to hide
+              <div className="mb-2 text-zinc-400">Backend Console v1.7.0 - Press {'>'} to hide
                 <span> 
                   <p>Available commands: </p>
                   <br />
