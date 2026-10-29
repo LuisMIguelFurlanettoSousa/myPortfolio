@@ -29,7 +29,7 @@ export default function Terminal() {
       command: `
 Name: Luís Miguel Furlanetto Sousa
 Role: Full-Stack Developer
-Location: Brazil
+Location: Uberlândia, MG - Brazil
 Contact: (34) 99723-7900 | lfurlanettosousa@gmail.com
 GitHub: LuisMIguelFurlanettoSousa
 LinkedIn: Luís Miguel Furlanetto
@@ -46,7 +46,7 @@ Conclusão prevista: 2026
 
 Idiomas:
 - Português (nativo)
-- Inglês (Intermediário)
+- Inglês (Intermediário), cursando o CIMV (Curso de Inglês Mairo Vergara)
 `,
       delay: 20,
     },
@@ -54,12 +54,16 @@ Idiomas:
     {
       prompt: '',
       command: `
-Desenvolvedor de Software com experiência em Java no backend, React e React Native no frontend.
-Atuo no desenvolvimento de funcionalidades com foco em performance, usabilidade e qualidade,
-aplicando refatoração, TDD e otimização contínua para garantir código escalável e de fácil
-manutenção. Vivência em APIs RESTful, automação de processos com Camunda BPM, Docker e
-práticas de CI/CD. Conhecimento em banco de dados, sempre aplicando boas práticas de arquitetura
-para entregar sistemas seguros e de alto desempenho.
+Desenvolvedor full stack na uan®. Trabalho no iGED, plataforma de gestão de documentos,
+com Java, Spring Boot e Camunda no backend e React e TypeScript no frontend.
+
+Desde abril de 2026 desenvolvo o Ecossistema Jarbas, agentes de IA que automatizam o
+ciclo de desenvolvimento da empresa, do chamado ao pull request pronto para revisão.
+
+Fora do emprego, contribuo com open source (tw93/Pake, tw93/Mole, Project N.O.M.A.D.)
+e faço sites e apps como freelancer.
+
+Procuro vagas de desenvolvedor full stack ou backend, em Uberlândia ou remoto.
 `,
       delay: 15,
     },
@@ -70,12 +74,12 @@ para entregar sistemas seguros e de alto desempenho.
 total 6
 drwxr-xr-x  2 luis  staff  192 Apr 22 19:48 .
 drwxr-xr-x 10 luis  staff  320 Apr 22 19:48 ..
--rw-r--r--  1 luis  staff  4.2K Apr 22 19:48 FistApi.js
--rw-r--r--  1 luis  staff  3.8K Apr 22 19:48 TripleWinSlots.py
--rw-r--r--  1 luis  staff  5.6K Apr 22 19:48 Beecrowd.py
--rw-r--r--  1 luis  staff  4.1K Apr 22 19:48 NepsAcademy.py
--rw-r--r--  1 luis  staff  7.7K Apr 22 19:48 myPortfolio.tsx
--rw-r--r--  1 luis  staff  1.4K Apr 22 19:48 GeradorDeSenhas.C
+-rw-r--r--  1 luis  staff  9.1K Oct 29 09:12 ecossistema-jarbas/
+-rw-r--r--  1 luis  staff  2.4K Oct 29 09:12 open-source/tw93-pake
+-rw-r--r--  1 luis  staff  1.8K Oct 29 09:12 open-source/tw93-mole
+-rw-r--r--  1 luis  staff  1.2K Oct 29 09:12 open-source/project-nomad
+-rw-r--r--  1 luis  staff  6.3K Oct 29 09:12 spray-pro-site.astro
+-rw-r--r--  1 luis  staff  7.7K Oct 29 09:12 myPortfolio.tsx
 `,
       delay: 10,
     },
@@ -87,6 +91,7 @@ total 8
 drwxr-xr-x  2 luis  staff  192 Apr 22 19:48 .
 drwxr-xr-x 10 luis  staff  320 Apr 22 19:48 ..
 -rw-r--r--  1 luis  staff  11.9K Apr 22 19:48 Análise e Desenvolvimento de Sistemas (Uniube)
+-rw-r--r--  1 luis  staff  5.2K Oct 29 09:12 Curso de Inglês Mairo Vergara (CIMV, em andamento)
 -rw-r--r--  1 luis  staff  4.2K Apr 22 19:48 JavaViradoNoJiraya.java
 -rw-r--r--  1 luis  staff  3.8K Apr 22 19:48 FullStack (Luiz Otávio Miranda).ts
 -rw-r--r--  1 luis  staff  4.4K Apr 22 19:48 Python (Luiz Otávio Miranda).py
@@ -103,6 +108,7 @@ drwxr-xr-x 10 luis  staff  320 Apr 22 19:48 ..
   const staticContent = `user@portfolio:~$ cat courses.txt
 
 Análise e Desenvolvimento de Sistemas (Uniube)
+Curso de Inglês Mairo Vergara (CIMV, em andamento)
 JavaViradoNoJiraya.java
 FullStack (Luiz Otávio Miranda).ts
 Python (Luiz Otávio Miranda).py
