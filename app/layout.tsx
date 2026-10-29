@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ["latin"] })
 export const generateMetadata = (): Metadata => {
   return {
     title: "Luís Miguel - Portfolio",
-    description: "Full-Stack Developer & Software Engineer Portfolio",
+    description: "Desenvolvedor Full Stack (Java, Spring Boot, React, TypeScript) que cria agentes de IA na uan® e contribui com open source.",
     metadataBase: new URL("https://lmfs.netlify.app/"),
     robots: {
       index: true,
@@ -39,7 +39,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="pt-BR">
       <head>
         {/* Add CSP meta tag */}
         <meta
