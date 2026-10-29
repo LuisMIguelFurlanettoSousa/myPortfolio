@@ -49,13 +49,13 @@ export default function Portfolio() {
     Record<string, boolean>
   >({})
 
-  const categories = ['all', 'ai', 'open-source', 'automation', 'backend', 'frontend']
+  const categories = ['all', 'IA', 'open-source', 'automation', 'backend', 'frontend']
 
   const works: Project[] = [
     {
       id: 7,
       title: 'Ecossistema Jarbas',
-      category: 'ai',
+      category: 'IA',
       year: '2026',
       description:
         'Agentes de IA que automatizam o ciclo de desenvolvimento da uan®, do chamado ao pull request',
