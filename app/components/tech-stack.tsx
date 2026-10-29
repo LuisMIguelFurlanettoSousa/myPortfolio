@@ -30,8 +30,23 @@ export default function TechStack() {
       category: 'language',
       icon: 'TS',
     },
+    {
+      name: 'Python',
+      category: 'language',
+      icon: 'PY',
+    },
+    {
+      name: 'Go',
+      category: 'language',
+      icon: 'GO',
+    },
 
     // Frameworks
+    {
+      name: 'Spring Boot',
+      category: 'framework',
+      icon: 'SPRING',
+    },
     {
       name: 'React',
       category: 'framework',
@@ -62,8 +77,18 @@ export default function TechStack() {
       category: 'framework',
       icon: 'NEXT',
     },
+    {
+      name: 'Astro',
+      category: 'framework',
+      icon: 'ASTRO',
+    },
 
     // Databases
+    {
+      name: 'PostgreSQL',
+      category: 'database',
+      icon: 'PG',
+    },
     {
       name: 'DynamoDB',
       category: 'database',
