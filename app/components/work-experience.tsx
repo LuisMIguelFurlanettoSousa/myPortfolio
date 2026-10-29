@@ -145,7 +145,7 @@ export default function WorkExperience() {
               viewport={{ once: true }}
             >
               <span className="text-green-500">2024</span> —{' '}
-              <span className="text-purple-500">{new Date().getFullYear()}</span>
+              <span className="text-purple-500">hoje</span>
             </motion.div>
           </div>
 
