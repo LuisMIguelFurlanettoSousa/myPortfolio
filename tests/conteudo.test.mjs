@@ -75,7 +75,8 @@ test('o rodapé mostra o ano atual', async () => {
   const ano = new Date().getFullYear()
 
   // Ação
-  const mostraAno = html.includes(`© ${ano}`) || html.includes(`©<!-- --> <!-- -->${ano}`)
+  // O React separa texto fixo e variável com comentários <!-- --> no HTML.
+  const mostraAno = html.replaceAll('<!-- -->', '').includes(`© ${ano}`)
 
   // Validação
   assert.ok(mostraAno, `esperava "© ${ano}" no rodapé`)
