@@ -1,6 +1,6 @@
-"use client"
-
 export default function Footer() {
+  // Componente de servidor: o ano é fixado no build e o cliente não recalcula,
+  // senão a virada de ano sem deploy novo quebraria a hidratação.
   const ano = new Date().getFullYear()
 
   return (
