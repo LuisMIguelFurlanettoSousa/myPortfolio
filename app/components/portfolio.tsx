@@ -38,6 +38,7 @@ interface Project {
   longDescription: string
   tags: string[]
   repository?: string
+  site?: string
   status: '🟢 online' | '🟡 GitHub' | '🔴 offline' | '🟣 development'
   endpoints?: ProjectEndpoint[]
 }
@@ -48,9 +49,101 @@ export default function Portfolio() {
     Record<string, boolean>
   >({})
 
-  const categories = ['all', 'automation', 'backend', 'frontend']
+  const categories = ['all', 'ai', 'open-source', 'automation', 'backend', 'frontend']
 
   const works: Project[] = [
+    {
+      id: 7,
+      title: 'Ecossistema Jarbas',
+      category: 'ai',
+      year: '2026',
+      description:
+        'Agentes de IA que automatizam o ciclo de desenvolvimento da uan®, do chamado ao pull request',
+      longDescription: `Ecossistema de agentes de IA que a uan® usa para automatizar o ciclo de desenvolvimento e operação de software, do chamado aberto pelo cliente até o pull request pronto para revisão. Trabalho nele desde abril de 2026 e já são mais de 180 pull requests mergeados.
+
+Características principais:
+- Atendimento: um agente conversa com quem abre o chamado, classifica a criticidade e cria o card no board do cliente, com os dados de cada cliente isolados
+- Desenvolvimento: ao receber um card, o agente estuda o código, implementa, escreve testes e abre o pull request; o merge continua com revisão humana
+- Operação: alertas de monitoramento viram cards sozinhos, e tarefas de infraestrutura são feitas por chat
+- Agentes autônomos de especificação, arquitetura e gestão de produto, e um fluxo de QA automatizado em piloto`,
+      tags: ['Python', 'Go', 'TypeScript', 'LLMs', 'MCP', 'Docker'],
+      status: '🟢 online',
+    },
+    {
+      id: 8,
+      title: 'Open source: tw93/Mole',
+      category: 'open-source',
+      year: '2026',
+      description:
+        '5 pull requests mergeados no Mole, ferramenta de limpeza de macOS com 73 mil estrelas',
+      longDescription: `Contribuições ao Mole, ferramenta de limpeza e otimização de macOS escrita em Shell e Go, com 73 mil estrelas no GitHub.
+
+Características principais:
+- Alguns bugs só aconteciam no bash 3.2, o padrão do macOS; compilei o bash 3.2.57 no Linux para reproduzi-los e corrigi o atalho gg de voltar ao topo
+- Corrigi a exibição da saúde do sistema em idiomas com vírgula decimal
+- Corrigi o score de saúde que oscilava acima dos limites de CPU e memória
+- Ajustei o relatório de limpeza para mostrar a contagem real de itens e as limpezas abaixo de 1 MB`,
+      tags: ['Shell', 'Bash', 'Go', 'macOS'],
+      repository:
+        'https://github.com/tw93/Mole/pulls?q=author%3ALuisMIguelFurlanettoSousa',
+      status: '🟡 GitHub',
+    },
+    {
+      id: 9,
+      title: 'Open source: tw93/Pake',
+      category: 'open-source',
+      year: '2026',
+      description:
+        '15 pull requests mergeados no Pake, que transforma sites em apps desktop (62 mil estrelas)',
+      longDescription: `Contribuições ao Pake, ferramenta em Rust (Tauri) e TypeScript que transforma qualquer site em app desktop, com 62 mil estrelas no GitHub.
+
+Características principais:
+- Correções no CLI e no build para Linux, como valores fracionados de --zoom que quebravam a desserialização em Rust
+- Correções no script injetado nas páginas e na extensão de arquivos baixados via data:image
+- Testes unitários para os utilitários do CLI (url, error, validate)
+- Correções nos exemplos de Tauri v2 da documentação`,
+      tags: ['TypeScript', 'Rust', 'Tauri', 'Vitest'],
+      repository:
+        'https://github.com/tw93/Pake/pulls?q=author%3ALuisMIguelFurlanettoSousa',
+      status: '🟡 GitHub',
+    },
+    {
+      id: 10,
+      title: 'Open source: Project N.O.M.A.D.',
+      category: 'open-source',
+      year: '2026',
+      description:
+        '3 pull requests mergeados no servidor offline com IA local, dois deles de segurança (41 mil estrelas)',
+      longDescription: `Contribuições ao Project N.O.M.A.D., servidor offline com IA local, Wikipedia e mapas para uso sem internet, com 41 mil estrelas no GitHub.
+
+Características principais:
+- Correção de SSRF (CWE-918) apontado em auditoria de segurança
+- Fim da exposição de detalhes internos em mensagens de erro (CWE-209)
+- Validação do parâmetro key no endpoint de leitura de configurações
+- Implementação do método deleteZimFile que faltava no cliente da API`,
+      tags: ['TypeScript', 'Node.js', 'Segurança'],
+      repository:
+        'https://github.com/Crosstalk-Solutions/project-nomad/pulls?q=author%3ALuisMIguelFurlanettoSousa',
+      status: '🟡 GitHub',
+    },
+    {
+      id: 11,
+      title: 'Spray Pro Clean Services',
+      category: 'frontend',
+      year: '2026',
+      description:
+        'Site comercial em inglês para uma empresa de limpeza de San Francisco, feito como freelance',
+      longDescription: `Site comercial em inglês para a Spray Pro Clean Services, voltado à captação de orçamentos em San Francisco e na Bay Area.
+
+Características principais:
+- Astro, Tailwind CSS e ilhas React, priorizando carregamento rápido e acessibilidade
+- APIs serverless para orçamentos e avaliações, integradas ao Resend e ao Neon Postgres
+- SEO local, dados estruturados e PWA
+- Testes com Vitest e Testing Library, CI/CD com GitHub Actions e deploy na Vercel`,
+      tags: ['Astro', 'Tailwind CSS', 'React', 'Neon Postgres', 'Vercel'],
+      site: 'https://www.sprayproteam.com/',
+      status: '🟢 online',
+    },
     {
       id: 1,
       title: 'Auto Apply Bot',
@@ -483,6 +576,17 @@ Características principais:
                                 </h4>
                                 <span className="text-lg">{work.status}</span>
                               </div>
+                              {work.site && (
+                                <a
+                                  href={work.site}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 px-4 py-2 rounded-md transition-colors"
+                                >
+                                  <span>Ver site</span>
+                                  <ExternalLink className="h-3 w-3" />
+                                </a>
+                              )}
                               {work.repository && (
                                 <a
                                   href={work.repository}
