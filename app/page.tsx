@@ -1,4 +1,3 @@
-import ConstructionTerminal from './components/construction-terminal'
 import Contact from './components/contact'
 import EasterEggs from './components/easter-eggs'
 import Footer from './components/footer'
@@ -17,7 +16,6 @@ export default function Page() {
       <TechStack />
       <Terminal />
       <Contact />
-      <ConstructionTerminal />
       <EasterEggs />
       <Footer />
     </main>
